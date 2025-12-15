@@ -1,0 +1,295 @@
+[00:00:01.104] Server  LOG      ✓ Ready in 698ms
+[00:00:04.120] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:00:04.627] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:00:06.035] Browser WARN    Image with src "/logo_gunas_group.png" has "fill" but is missing "sizes" prop. Please add it to improve page performance. Read more: https://nextjs.org/docs/api-reference/next/image#sizes
+[00:00:06.035] Browser LOG     %c[Vercel Web Analytics]%c Debug mode is enabled by default in development. No requests will be sent to the server. color: rgb(120, 120, 120) color: inherit
+[00:00:06.035] Browser LOG     %c[Vercel Web Analytics]%c Running queued event color: rgb(120, 120, 120) color: inherit pageview {"path":"/","route":"/"}
+[00:00:06.035] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/ color: rgb(120, 120, 120) color: inherit {"dp":"/","o":"http://localhost:3000/","sdkn":"@vercel/analytics/next","sdkv":"1.5.0","sv":"0.1.3","ts":1765437814937}
+[00:00:19.339] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:00:41.518] Server  LOG     [Inference API] Processing inference request...
+[00:00:41.522] Server  LOG     [Inference API] User ID: 1
+[00:00:41.524] Server  LOG     [Inference API] Calling Python backend at: "http://localhost:5000"
+[00:00:41.750] Server  ERROR   C:\Users\Rahmat Fauzi\Documents\Rahmat Fauzi\Probation\SCOPS\palm-oil-grading-app\.next\dev\server\chunks\[root-of-the-server]__a48d32e4._.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+[00:00:41.776] Server  ERROR   C:\Users\Rahmat Fauzi\Documents\Rahmat Fauzi\Probation\SCOPS\palm-oil-grading-app\node_modules\next\dist\compiled\next-server\app-route-turbo.runtime.dev.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+[00:00:41.804] Server  ERROR   C:\Users\Rahmat Fauzi\Documents\Rahmat Fauzi\Probation\SCOPS\palm-oil-grading-app\.next\dev\server\chunks\node_modules_next_eadd69e3._.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+[00:00:41.810] Server  ERROR   C:\Users\Rahmat Fauzi\Documents\Rahmat Fauzi\Probation\SCOPS\palm-oil-grading-app\node_modules\next\dist\server\base-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+[00:00:41.815] Server  ERROR   C:\Users\Rahmat Fauzi\Documents\Rahmat Fauzi\Probation\SCOPS\palm-oil-grading-app\node_modules\next\dist\server\next-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+[00:00:41.821] Server  ERROR   C:\Users\Rahmat Fauzi\Documents\Rahmat Fauzi\Probation\SCOPS\palm-oil-grading-app\node_modules\next\dist\server\dev\next-dev-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+[00:00:41.822] Server  ERROR   C:\Users\Rahmat Fauzi\Documents\Rahmat Fauzi\Probation\SCOPS\palm-oil-grading-app\node_modules\next\dist\trace\trace.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+[00:00:41.823] Server  ERROR   C:\Users\Rahmat Fauzi\Documents\Rahmat Fauzi\Probation\SCOPS\palm-oil-grading-app\node_modules\next\dist\server\lib\router-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+[00:00:41.824] Server  ERROR   C:\Users\Rahmat Fauzi\Documents\Rahmat Fauzi\Probation\SCOPS\palm-oil-grading-app\node_modules\next\dist\server\lib\start-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+[00:00:41.826] Server  ERROR   [Inference API] Python backend error: Error: Python backend returned 500: {"error":"Internal error: unsupported format string passed to NoneType.__format__","success":false}
+
+[00:00:41.827] Server  ERROR   C:\Users\Rahmat Fauzi\Documents\Rahmat Fauzi\Probation\SCOPS\palm-oil-grading-app\.next\dev\server\chunks\[root-of-the-server]__a48d32e4._.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+[00:00:41.831] Server  ERROR   C:\Users\Rahmat Fauzi\Documents\Rahmat Fauzi\Probation\SCOPS\palm-oil-grading-app\node_modules\next\dist\compiled\next-server\app-route-turbo.runtime.dev.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+[00:00:41.831] Server  ERROR   C:\Users\Rahmat Fauzi\Documents\Rahmat Fauzi\Probation\SCOPS\palm-oil-grading-app\.next\dev\server\chunks\node_modules_next_eadd69e3._.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+[00:00:41.832] Server  ERROR   C:\Users\Rahmat Fauzi\Documents\Rahmat Fauzi\Probation\SCOPS\palm-oil-grading-app\node_modules\next\dist\server\base-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+[00:00:41.833] Server  ERROR   C:\Users\Rahmat Fauzi\Documents\Rahmat Fauzi\Probation\SCOPS\palm-oil-grading-app\node_modules\next\dist\server\next-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+[00:00:41.834] Server  ERROR   C:\Users\Rahmat Fauzi\Documents\Rahmat Fauzi\Probation\SCOPS\palm-oil-grading-app\node_modules\next\dist\server\dev\next-dev-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+[00:00:41.834] Server  ERROR   C:\Users\Rahmat Fauzi\Documents\Rahmat Fauzi\Probation\SCOPS\palm-oil-grading-app\node_modules\next\dist\trace\trace.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+[00:00:41.835] Server  ERROR   C:\Users\Rahmat Fauzi\Documents\Rahmat Fauzi\Probation\SCOPS\palm-oil-grading-app\node_modules\next\dist\server\lib\router-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+[00:00:41.835] Server  ERROR   C:\Users\Rahmat Fauzi\Documents\Rahmat Fauzi\Probation\SCOPS\palm-oil-grading-app\node_modules\next\dist\server\lib\start-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+[00:00:41.836] Server  ERROR   [Inference API] Error: Error: Failed to connect to Python backend: Python backend returned 500: {"error":"Internal error: unsupported format string passed to NoneType.__format__","success":false}
+
+[00:00:41.962] Server  WARN     ⚠ Cross origin request detected from starlike-deedee-nonvariably.ngrok-free.dev to /_next/* resource. In a future major version of Next.js, you will need to explicitly configure "allowedDevOrigins" in next.config to allow this.
+Read more: https://nextjs.org/docs/app/api-reference/config/next-config-js/allowedDevOrigins
+[00:01:24.752] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:01:24.752] Browser LOG     %c[Vercel Web Analytics]%c Debug mode is enabled by default in development. No requests will be sent to the server. color: rgb(120, 120, 120) color: inherit
+[00:01:24.752] Browser LOG     %c[Vercel Web Analytics]%c Running queued event color: rgb(120, 120, 120) color: inherit pageview {"path":"/","route":"/"}
+[00:01:24.752] Browser LOG     %c[Vercel Web Analytics]%c [pageview] https://starlike-deedee-nonvariably.ngrok-free.dev/ color: rgb(120, 120, 120) color: inherit {"dp":"/","o":"https://starlike-deedee-nonvariably.ngrok-free.dev/","r":"","sdkn":"@vercel/analytics/next","sdkv":"1.5.0","sv":"0.1.3","ts":1765437831285}
+[00:01:24.752] Browser WARN    Image with src "/logo_gunas_group.png" has "fill" but is missing "sizes" prop. Please add it to improve page performance. Read more: https://nextjs.org/docs/api-reference/next/image#sizes
+[00:01:24.752] Browser LOG     [CapturePage] Backend ready for inference
+[00:01:24.752] Browser LOG     [CapturePage] Backend ready for inference
+[00:01:24.752] Browser LOG     [CapturePage] Image captured successfully
+[00:01:24.752] Browser LOG     [CapturePage] Sending image to backend...
+[00:01:24.752] Browser ERROR   [CapturePage] Inference failed: {}
+[00:05:41.678] Server  LOG     [Inference API] Processing inference request...
+[00:05:41.679] Server  LOG     [Inference API] User ID: 1
+[00:05:41.679] Server  LOG     [Inference API] Calling Python backend at: "http://localhost:5000"
+[00:05:41.911] Server  LOG     [Inference API] Python backend response: {}
+[00:05:41.912] Server  LOG     [Inference API] Inference completed in 232ms
+[00:05:43.993] Browser LOG     [CapturePage] Image captured successfully
+[00:05:43.993] Browser LOG     [CapturePage] Sending image to backend...
+[00:05:43.993] Browser LOG     [runInference] Backend response: {
+  "result": "No Bunches Detected",
+  "confidence": 0,
+  "predictions": [
+    0,
+    0,
+    0
+  ],
+  "inferenceTime": 232
+}
+[00:05:43.993] Browser LOG     [runInference] Total bunches: undefined
+[00:05:43.993] Browser LOG     [runInference] Classification summary: undefined
+[00:05:43.993] Browser LOG     [CapturePage] Inference complete: {"inferenceTime":232}
+[00:12:04.125] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:12:05.497] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:12:05.497] Browser WARN    Image with src "/logo_gunas_group.png" has "fill" but is missing "sizes" prop. Please add it to improve page performance. Read more: https://nextjs.org/docs/api-reference/next/image#sizes
+[00:12:05.497] Browser LOG     %c[Vercel Web Analytics]%c Debug mode is enabled by default in development. No requests will be sent to the server. color: rgb(120, 120, 120) color: inherit
+[00:12:05.497] Browser LOG     %c[Vercel Web Analytics]%c Running queued event color: rgb(120, 120, 120) color: inherit pageview {"path":"/","route":"/"}
+[00:12:05.497] Browser LOG     %c[Vercel Web Analytics]%c [pageview] https://starlike-deedee-nonvariably.ngrok-free.dev/ color: rgb(120, 120, 120) color: inherit {"dp":"/","o":"https://starlike-deedee-nonvariably.ngrok-free.dev/","r":"","sdkn":"@vercel/analytics/next","sdkv":"1.5.0","sv":"0.1.3","ts":1765438535071}
+[00:12:11.928] Browser LOG     [CapturePage] Backend ready for inference
+[00:12:11.928] Browser LOG     [CapturePage] Backend ready for inference
+[00:12:37.020] Browser LOG     [CapturePage] Image captured successfully
+[00:12:37.020] Browser LOG     [CapturePage] Sending image to backend...
+[00:12:37.784] Server  LOG     [Inference API] Processing inference request...
+[00:12:37.786] Server  LOG     [Inference API] User ID: 1
+[00:12:37.787] Server  LOG     [Inference API] Calling Python backend at: "http://localhost:5000"
+[00:12:38.461] Server  LOG     [Inference API] Python backend response: {}
+[00:12:38.462] Server  LOG     [Inference API] Inference completed in 676ms
+[00:12:38.720] Browser LOG     [runInference] Backend response: {
+  "result": "unripe",
+  "confidence": 1,
+  "predictions": [
+    1,
+    0,
+    0
+  ],
+  "inferenceTime": 676
+}
+[00:12:38.720] Browser LOG     [runInference] Total bunches: undefined
+[00:12:38.720] Browser LOG     [runInference] Classification summary: undefined
+[00:12:38.720] Browser LOG     [CapturePage] Inference complete: {"inferenceTime":676}
+[00:13:14.290] Browser LOG     [Storage] Saved grading record: 1765438603681-idcv8cv98
+[00:13:14.290] Browser LOG     [CapturePage] Result saved to history: 1765438603681-idcv8cv98
+[00:13:15.817] Browser LOG     [HistoryPage] Loaded 3 records from storage
+[00:13:15.817] Browser LOG     [HistoryPage] Loaded 3 records from storage
+[00:53:05.786] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:53:06.914] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:53:06.914] Browser WARN    Image with src "/logo_gunas_group.png" has "fill" but is missing "sizes" prop. Please add it to improve page performance. Read more: https://nextjs.org/docs/api-reference/next/image#sizes
+[00:53:07.054] Browser LOG     %c[Vercel Web Analytics]%c Debug mode is enabled by default in development. No requests will be sent to the server. color: rgb(120, 120, 120) color: inherit
+[00:53:07.054] Browser LOG     %c[Vercel Web Analytics]%c Running queued event color: rgb(120, 120, 120) color: inherit pageview {"path":"/","route":"/"}
+[00:53:07.054] Browser LOG     %c[Vercel Web Analytics]%c [pageview] https://starlike-deedee-nonvariably.ngrok-free.dev/ color: rgb(120, 120, 120) color: inherit {"dp":"/","o":"https://starlike-deedee-nonvariably.ngrok-free.dev/","r":"","sdkn":"@vercel/analytics/next","sdkv":"1.5.0","sv":"0.1.3","ts":1765440995822}
+[00:53:13.398] Browser LOG     [CapturePage] Backend ready for inference
+[00:53:13.399] Browser LOG     [CapturePage] Backend ready for inference
+[00:53:49.748] Browser LOG     [HistoryPage] Loaded 3 records from storage
+[00:53:49.749] Browser LOG     [HistoryPage] Loaded 3 records from storage
+[01:01:09.911] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[01:01:10.507] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[01:01:10.507] Browser WARN    Image with src "/logo_gunas_group.png" has "fill" but is missing "sizes" prop. Please add it to improve page performance. Read more: https://nextjs.org/docs/api-reference/next/image#sizes
+[01:01:10.507] Browser LOG     %c[Vercel Web Analytics]%c Debug mode is enabled by default in development. No requests will be sent to the server. color: rgb(120, 120, 120) color: inherit
+[01:01:10.507] Browser LOG     %c[Vercel Web Analytics]%c Running queued event color: rgb(120, 120, 120) color: inherit pageview {"path":"/","route":"/"}
+[01:01:10.507] Browser LOG     %c[Vercel Web Analytics]%c [pageview] https://starlike-deedee-nonvariably.ngrok-free.dev/ color: rgb(120, 120, 120) color: inherit {"dp":"/","o":"https://starlike-deedee-nonvariably.ngrok-free.dev/","r":"","sdkn":"@vercel/analytics/next","sdkv":"1.5.0","sv":"0.1.3","ts":1765441479347}
+[01:01:19.386] Browser LOG     [CapturePage] Backend ready for inference
+[01:01:19.386] Browser LOG     [CapturePage] Backend ready for inference
+[01:01:25.004] Browser LOG     [CapturePage] Image captured successfully
+[01:01:25.004] Browser LOG     [CapturePage] Sending image to backend...
+[01:01:25.287] Server  LOG     [Inference API] Processing inference request...
+[01:01:25.287] Server  LOG     [Inference API] User ID: 1
+[01:01:25.288] Server  LOG     [Inference API] Calling Python backend at: "http://localhost:5000"
+[01:01:25.492] Server  LOG     [Inference API] Python backend response: {}
+[01:01:25.493] Server  LOG     [Inference API] Inference completed in 204ms
+[01:01:25.686] Browser LOG     [runInference] Backend response: {
+  "result": "unripe",
+  "confidence": 1,
+  "predictions": [
+    1,
+    0,
+    0
+  ],
+  "inferenceTime": 204
+}
+[01:01:25.686] Browser LOG     [runInference] Total bunches: undefined
+[01:01:25.686] Browser LOG     [runInference] Classification summary: undefined
+[01:01:25.686] Browser LOG     [CapturePage] Inference complete: {"inferenceTime":204}
+[01:01:29.182] Browser LOG     [Storage] Saved grading record: 1765441497920-q0z1ta3yp
+[01:01:29.182] Browser LOG     [CapturePage] Result saved to history: 1765441497920-q0z1ta3yp
+[01:01:30.101] Browser LOG     [HistoryPage] Loaded 4 records from storage
+[01:01:30.101] Browser LOG     [HistoryPage] Loaded 4 records from storage
+[01:01:34.577] Browser LOG     [CapturePage] Backend ready for inference
+[01:01:34.577] Browser LOG     [CapturePage] Backend ready for inference
+[01:02:08.538] Browser LOG     [CapturePage] Image captured successfully
+[01:02:08.538] Browser LOG     [CapturePage] Sending image to backend...
+[01:02:08.746] Server  LOG     [Inference API] Processing inference request...
+[01:02:08.747] Server  LOG     [Inference API] User ID: 1
+[01:02:08.748] Server  LOG     [Inference API] Calling Python backend at: "http://localhost:5000"
+[01:02:08.993] Server  LOG     [Inference API] Python backend response: {}
+[01:02:08.994] Server  LOG     [Inference API] Inference completed in 246ms
+[01:02:09.181] Browser LOG     [runInference] Backend response: {
+  "result": "unripe",
+  "confidence": 1,
+  "predictions": [
+    1,
+    0,
+    0
+  ],
+  "inferenceTime": 246
+}
+[01:02:09.181] Browser LOG     [runInference] Total bunches: undefined
+[01:02:09.181] Browser LOG     [runInference] Classification summary: undefined
+[01:02:09.181] Browser LOG     [CapturePage] Inference complete: {"inferenceTime":246}
+[01:02:51.247] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[01:02:52.104] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[01:02:52.104] Browser WARN    Image with src "/logo_gunas_group.png" has "fill" but is missing "sizes" prop. Please add it to improve page performance. Read more: https://nextjs.org/docs/api-reference/next/image#sizes
+[01:02:52.104] Browser LOG     %c[Vercel Web Analytics]%c Debug mode is enabled by default in development. No requests will be sent to the server. color: rgb(120, 120, 120) color: inherit
+[01:02:52.104] Browser LOG     %c[Vercel Web Analytics]%c Running queued event color: rgb(120, 120, 120) color: inherit pageview {"path":"/","route":"/"}
+[01:02:52.104] Browser LOG     %c[Vercel Web Analytics]%c [pageview] https://starlike-deedee-nonvariably.ngrok-free.dev/ color: rgb(120, 120, 120) color: inherit {"dp":"/","o":"https://starlike-deedee-nonvariably.ngrok-free.dev/","r":"","sdkn":"@vercel/analytics/next","sdkv":"1.5.0","sv":"0.1.3","ts":1765441580961}
+[01:02:59.737] Browser LOG     [CapturePage] Backend ready for inference
+[01:02:59.737] Browser LOG     [CapturePage] Backend ready for inference
+[01:03:19.982] Browser LOG     [CapturePage] Image captured successfully
+[01:03:19.982] Browser LOG     [CapturePage] Sending image to backend...
+[01:03:20.105] Server  LOG     [Inference API] Processing inference request...
+[01:03:20.106] Server  LOG     [Inference API] User ID: 1
+[01:03:20.107] Server  LOG     [Inference API] Calling Python backend at: "http://localhost:5000"
+[01:03:20.307] Server  LOG     [Inference API] Python backend response: {}
+[01:03:20.308] Server  LOG     [Inference API] Inference completed in 202ms
+[01:03:20.492] Browser LOG     [runInference] Backend response: {
+  "result": "unripe",
+  "confidence": 1,
+  "predictions": [
+    1,
+    0,
+    0
+  ],
+  "inferenceTime": 202
+}
+[01:03:20.492] Browser LOG     [runInference] Total bunches: undefined
+[01:03:20.492] Browser LOG     [runInference] Classification summary: undefined
+[01:03:20.492] Browser LOG     [CapturePage] Inference complete: {"inferenceTime":202}
+[01:33:10.952] Server  LOG      ✓ Compiled in 148ms
+[01:33:27.763] Server  LOG      ✓ Compiled in 169ms
+[01:33:28.767] Browser ERROR   ./components/pages/capture-page.tsx:315:15
+Parsing ecmascript source code failed
+  313 |                 }
+  314 |               }}
+> 315 |               className="w-full h-full object-contain"
+      |               ^^^^^^^^^
+  316 |             />
+  317 |           </div>
+  318 |
+
+Expected '</', got 'className'
+
+Import traces:
+  Client Component Browser:
+    ./components/pages/capture-page.tsx [Client Component Browser]
+    ./app/page.tsx [Client Component Browser]
+    ./app/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./components/pages/capture-page.tsx [Client Component SSR]
+    ./app/page.tsx [Client Component SSR]
+    ./app/page.tsx [Server Component]
+[01:33:48.195] Server  LOG      ✓ Compiled in 74ms
+[01:33:48.744] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[01:34:55.786] Browser LOG     [CapturePage] Backend ready for inference
+[01:34:55.786] Browser LOG     [CapturePage] Backend ready for inference
+[01:35:01.719] Server  LOG     [Inference API] Processing inference request...
+[01:35:01.721] Server  LOG     [Inference API] User ID: 1
+[01:35:01.723] Server  LOG     [Inference API] Calling Python backend at: "http://localhost:5000"
+[01:35:01.795] Browser LOG     [CapturePage] Image captured successfully
+[01:35:01.795] Browser LOG     [CapturePage] Sending image to backend...
+[01:35:02.776] Server  LOG     [Inference API] Python backend response: {}
+[01:35:02.777] Server  LOG     [Inference API] Inference completed in 1055ms
+[01:35:02.905] Browser LOG     [runInference] Backend response: {
+  "result": "No Bunches Detected",
+  "confidence": 0,
+  "predictions": [
+    0,
+    0,
+    0
+  ],
+  "inferenceTime": 1055
+}
+[01:35:02.905] Browser LOG     [runInference] Total bunches: undefined
+[01:35:02.905] Browser LOG     [runInference] Classification summary: undefined
+[01:35:02.905] Browser LOG     [CapturePage] Inference complete: {"inferenceTime":1055}
+[01:35:02.905] Browser LOG     [Result View] totalBunches: 0
+[01:35:02.905] Browser LOG     [Result View] bunches: undefined
+[01:35:02.905] Browser LOG     [Result View] capturedImage length: 23811
+[01:35:02.905] Browser LOG     [Result View] totalBunches: 0
+[01:35:02.905] Browser LOG     [Result View] bunches: undefined
+[01:35:02.905] Browser LOG     [Result View] capturedImage length: 23811
+[01:35:02.905] Browser LOG     [Canvas] Image loaded, drawing boxes... 0
+[01:35:02.905] Browser LOG     [Canvas] No bunches to draw
+[01:35:02.905] Browser LOG     [Canvas] Image loaded, drawing boxes... 0
+[01:35:02.905] Browser LOG     [Canvas] No bunches to draw
+[01:35:07.619] Browser LOG     [HistoryPage] Loaded 0 records from storage
+[01:35:07.619] Browser LOG     [HistoryPage] Loaded 0 records from storage
+[01:36:19.805] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[01:37:46.471] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[01:37:46.471] Browser LOG     %c[Vercel Web Analytics]%c Debug mode is enabled by default in development. No requests will be sent to the server. color: rgb(120, 120, 120) color: inherit
+[01:37:46.471] Browser LOG     %c[Vercel Web Analytics]%c Running queued event color: rgb(120, 120, 120) color: inherit pageview {"path":"/","route":"/"}
+[01:37:46.471] Browser LOG     %c[Vercel Web Analytics]%c [pageview] https://starlike-deedee-nonvariably.ngrok-free.dev/ color: rgb(120, 120, 120) color: inherit {"dp":"/","o":"https://starlike-deedee-nonvariably.ngrok-free.dev/","r":"","sdkn":"@vercel/analytics/next","sdkv":"1.5.0","sv":"0.1.3","ts":1765443596578}
+[01:37:46.471] Browser WARN    Image with src "/logo_gunas_group.png" has "fill" but is missing "sizes" prop. Please add it to improve page performance. Read more: https://nextjs.org/docs/api-reference/next/image#sizes
+[01:37:53.113] Browser LOG     [CapturePage] Backend ready for inference
+[01:37:53.113] Browser LOG     [CapturePage] Backend ready for inference
+[01:38:08.039] Browser LOG     [CapturePage] Image captured successfully
+[01:38:08.039] Browser LOG     [CapturePage] Sending image to backend...
+[01:38:08.387] Server  LOG     [Inference API] Processing inference request...
+[01:38:08.388] Server  LOG     [Inference API] User ID: 1
+[01:38:08.388] Server  LOG     [Inference API] Calling Python backend at: "http://localhost:5000"
+[01:38:08.748] Server  LOG     [Inference API] Python backend response: {}
+[01:38:08.749] Server  LOG     [Inference API] Inference completed in 361ms
+[01:38:09.013] Browser LOG     [runInference] Backend response: {
+  "result": "unripe",
+  "confidence": 1,
+  "predictions": [
+    1,
+    0,
+    0
+  ],
+  "inferenceTime": 361
+}
+[01:38:09.013] Browser LOG     [runInference] Total bunches: undefined
+[01:38:09.013] Browser LOG     [runInference] Classification summary: undefined
+[01:38:09.013] Browser LOG     [CapturePage] Inference complete: {"inferenceTime":361}
+[01:38:09.013] Browser LOG     [Result View] totalBunches: 0
+[01:38:09.013] Browser LOG     [Result View] bunches: undefined
+[01:38:09.013] Browser LOG     [Result View] capturedImage length: 528623
+[01:38:09.013] Browser LOG     [Result View] totalBunches: 0
+[01:38:09.013] Browser LOG     [Result View] bunches: undefined
+[01:38:09.013] Browser LOG     [Result View] capturedImage length: 528623
+[01:38:09.013] Browser LOG     [Canvas] Image loaded, drawing boxes... 0
+[01:38:09.013] Browser LOG     [Canvas] No bunches to draw
+[01:38:09.013] Browser LOG     [Canvas] Image loaded, drawing boxes... 0
+[01:38:09.013] Browser LOG     [Canvas] No bunches to draw

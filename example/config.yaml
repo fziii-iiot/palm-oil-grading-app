@@ -1,0 +1,55 @@
+# Palm Oil Fruit Detection & Classification Pipeline Configuration
+
+# Model paths (relative to integration folder)
+models:
+  # YOLOv8 detector TFLite model
+  detector_path: "../detector/exports/tflite/best_float16.tflite"
+  
+  # MobileNetV3 classifier TFLite model
+  classifier_path: "../classifier/exports/tflite/classifier_float16.tflite"
+  
+  # Model input sizes
+  detector_input_size: 640
+  classifier_input_size: 224
+
+# Detection and classification thresholds
+thresholds:
+  # Minimum confidence for a detection to be considered valid
+  confidence: 0.25
+  
+  # IoU threshold for Non-Maximum Suppression (NMS)
+  iou: 0.45
+  
+  # Padding around bounding box when cropping for classification (percentage)
+  bbox_padding: 0.05
+
+# Classification classes (order must match model output)
+classes:
+  - "unripe"
+  - "ripe"
+  - "over_ripe"
+
+# Visualization settings for drawing results
+visualization:
+  # Colors for each class (BGR format)
+  colors:
+    unripe: [0, 255, 0]      # Green
+    ripe: [0, 165, 255]       # Orange
+    over_ripe: [0, 0, 255]    # Red
+    unknown: [128, 128, 128]  # Gray
+  
+  # Text settings
+  font_scale: 0.6
+  line_thickness: 2
+
+# Output settings
+output:
+  # Default output directory for annotated images
+  default_dir: "./outputs"
+  
+  # Annotated image filename prefix
+  prefix: "annotated_"
+  
+  # JPEG quality for saved images (0-100)
+  jpeg_quality: 95
+

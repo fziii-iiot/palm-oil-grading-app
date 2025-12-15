@@ -36,11 +36,9 @@ export default function Home() {
       case 'login':
         return <LoginPage onLogin={handleLogin} />
       case 'capture':
-        return <CapturePage onCapture={() => setCurrentPage('processing')} />
-      case 'processing':
-        return <ProcessingPage onComplete={() => setCurrentPage('result')} />
-      case 'result':
-        return <ResultPage onSave={() => setCurrentPage('history')} />
+        // CapturePage handles its own flow: camera → processing → result
+        // It manages the captured image internally and shows it in all views
+        return <CapturePage />
       case 'history':
         return (
           <HistoryPage onSelectItem={handleSelectHistoryItem} />
