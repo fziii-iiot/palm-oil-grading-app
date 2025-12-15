@@ -1,62 +1,7 @@
-[00:00:00.718] Server  LOG      ✓ Ready in 470ms
-[00:00:11.809] Server  LOG      ○ Compiling / ...
-[00:00:16.002] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /. Please move it to viewport export instead.
+[00:00:00.800] Server  LOG      ✓ Ready in 485ms
+[00:00:03.249] Server  WARN     ⚠ Unsupported metadata viewport is configured in metadata export in /. Please move it to viewport export instead.
 Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
-[00:00:16.228] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[00:00:17.036] Browser LOG     %c[Vercel Web Analytics]%c Debug mode is enabled by default in development. No requests will be sent to the server. color: rgb(120, 120, 120) color: inherit
-[00:00:17.036] Browser LOG     %c[Vercel Web Analytics]%c Running queued event color: rgb(120, 120, 120) color: inherit pageview {"path":"/","route":"/"}
-[00:00:17.036] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/ color: rgb(120, 120, 120) color: inherit {"dp":"/","o":"http://localhost:3000/","r":"","sdkn":"@vercel/analytics/next","sdkv":"1.5.0","sv":"0.1.3","ts":1765817953824}
-[00:00:45.175] Server  ERROR   C:\Users\Rahmat Fauzi\Documents\Rahmat Fauzi\Probation\SCOPS\palm-oil-grading-app\.next\dev\server\chunks\[root-of-the-server]__9b9e5ff3._.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
-[00:00:45.198] Server  ERROR   C:\Users\Rahmat Fauzi\Documents\Rahmat Fauzi\Probation\SCOPS\palm-oil-grading-app\node_modules\next\dist\compiled\next-server\app-route-turbo.runtime.dev.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
-[00:00:45.221] Server  ERROR   C:\Users\Rahmat Fauzi\Documents\Rahmat Fauzi\Probation\SCOPS\palm-oil-grading-app\.next\dev\server\chunks\node_modules_next_a1a33131._.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
-[00:00:45.224] Server  ERROR   C:\Users\Rahmat Fauzi\Documents\Rahmat Fauzi\Probation\SCOPS\palm-oil-grading-app\node_modules\next\dist\server\base-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
-[00:00:45.227] Server  ERROR   C:\Users\Rahmat Fauzi\Documents\Rahmat Fauzi\Probation\SCOPS\palm-oil-grading-app\node_modules\next\dist\server\next-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
-[00:00:45.229] Server  ERROR   C:\Users\Rahmat Fauzi\Documents\Rahmat Fauzi\Probation\SCOPS\palm-oil-grading-app\node_modules\next\dist\server\dev\next-dev-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
-[00:00:45.230] Server  ERROR   C:\Users\Rahmat Fauzi\Documents\Rahmat Fauzi\Probation\SCOPS\palm-oil-grading-app\node_modules\next\dist\trace\trace.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
-[00:00:45.232] Server  ERROR   C:\Users\Rahmat Fauzi\Documents\Rahmat Fauzi\Probation\SCOPS\palm-oil-grading-app\node_modules\next\dist\server\lib\router-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
-[00:00:45.234] Server  ERROR   C:\Users\Rahmat Fauzi\Documents\Rahmat Fauzi\Probation\SCOPS\palm-oil-grading-app\node_modules\next\dist\server\lib\start-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
-[00:00:45.237] Server  ERROR   Login API error: TypeError: fetch failed
-[00:01:22.963] Browser LOG     [CapturePage] Backend ready for inference
-[00:01:22.964] Browser LOG     [CapturePage] Backend ready for inference
-[00:01:30.388] Browser LOG     [CapturePage] Image captured successfully
-[00:01:30.388] Browser LOG     [CapturePage] Sending image to backend...
-[00:01:30.460] Server  LOG     [Inference API] Processing inference request...
-[00:01:30.462] Server  LOG     [Inference API] User ID: 1
-[00:01:30.462] Server  LOG     [Inference API] Calling Python backend at: "http://localhost:5000"
-[00:01:30.922] Server  LOG     [Inference API] Python backend response: {}
-[00:01:30.922] Server  LOG     [Inference API] Inference completed in 460ms
-[00:01:31.049] Browser LOG     [runInference] Backend response: {
-  "result": "No Bunches Detected",
-  "confidence": 0,
-  "predictions": [
-    0,
-    0,
-    0
-  ],
-  "inferenceTime": 460
-}
-[00:01:31.049] Browser LOG     [runInference] Total bunches: undefined
-[00:01:31.049] Browser LOG     [runInference] Classification summary: undefined
-[00:01:31.049] Browser LOG     [CapturePage] Inference complete: {"inferenceTime":460}
-[00:01:31.049] Browser LOG     [Result View] totalBunches: 0
-[00:01:31.049] Browser LOG     [Result View] bunches: undefined
-[00:01:31.049] Browser LOG     [Result View] capturedImage length: 23811
-[00:01:31.049] Browser LOG     [Result View] totalBunches: 0
-[00:01:31.049] Browser LOG     [Result View] bunches: undefined
-[00:01:31.049] Browser LOG     [Result View] capturedImage length: 23811
-[00:01:31.049] Browser LOG     [Canvas] Image loaded, drawing boxes... 0
-[00:01:31.049] Browser LOG     [Canvas] No bunches to draw
-[00:01:31.049] Browser LOG     [Canvas] Image loaded, drawing boxes... 0
-[00:01:31.049] Browser LOG     [Canvas] No bunches to draw
-[00:01:35.515] Browser LOG     [Storage] Saved grading record: 1765818032295-wzxxnbkiz
-[00:01:35.515] Browser LOG     [CapturePage] Result saved to history: 1765818032295-wzxxnbkiz
-[00:01:35.515] Browser LOG     [Result View] totalBunches: 0
-[00:01:35.515] Browser LOG     [Result View] bunches: undefined
-[00:01:35.515] Browser LOG     [Result View] capturedImage length: 23811
-[00:01:35.515] Browser LOG     [Result View] totalBunches: 0
-[00:01:35.515] Browser LOG     [Result View] bunches: undefined
-[00:01:35.515] Browser LOG     [Result View] capturedImage length: 23811
-[00:01:35.515] Browser LOG     [Canvas] Image loaded, drawing boxes... 0
-[00:01:35.515] Browser LOG     [Canvas] No bunches to draw
-[00:01:36.774] Browser LOG     [HistoryPage] Loaded 1 records from storage
-[00:01:36.774] Browser LOG     [HistoryPage] Loaded 1 records from storage
+[00:00:03.455] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:00:04.139] Browser LOG     %c[Vercel Web Analytics]%c Debug mode is enabled by default in development. No requests will be sent to the server. color: rgb(120, 120, 120) color: inherit
+[00:00:04.139] Browser LOG     %c[Vercel Web Analytics]%c Running queued event color: rgb(120, 120, 120) color: inherit pageview {"path":"/","route":"/"}
+[00:00:04.139] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/ color: rgb(120, 120, 120) color: inherit {"dp":"/","o":"http://localhost:3000/","sdkn":"@vercel/analytics/next","sdkv":"1.5.0","sv":"0.1.3","ts":1765818121833}
