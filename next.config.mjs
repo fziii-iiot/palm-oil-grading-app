@@ -6,6 +6,7 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
+  turbopack: {},
   webpack: (config, { isServer }) => {
     // Enable WebAssembly support for TFLite
     config.experiments = {
