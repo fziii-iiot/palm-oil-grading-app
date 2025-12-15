@@ -1,103 +1,101 @@
-# Palm Oil Grading Backend
+# Backend - Palm Oil Grading API
 
-Backend service for on-device TFLite model inference.
+Flask backend for palm fruit bunch detection and classification using TensorFlow Lite.
 
-## 🏗️ Architecture
+## Quick Start
+
+1. **Install dependencies**
+```bash
+pip install -r requirements.txt
+```
+
+2. **Configure database** (create `.env` file)
+```env
+DB_HOST=localhost
+DB_PORT=5432
+DB_NAME=palm_grading
+DB_USER=postgres
+DB_PASSWORD=your_password
+SECRET_KEY=your_secret_key
+```
+
+3. **Run server**
+```bash
+python app.py
+# or
+.\run.bat  # Windows
+```
+
+Server runs on: http://localhost:5000
+
+## Project Structure
 
 ```
 backend/
-├── src/
-│   ├── routes/          # API route definitions
-│   ├── controllers/     # Request handlers
-│   ├── services/        # Business logic & ML model execution
-│   ├── utils/           # Helper functions
-│   ├── app.js          # Express app configuration
-│   └── server.js       # Server entry point
-├── models/             # ML model files (you need to add these)
-│   └── palm-oil-model/ # Converted TensorFlow.js model
-│       ├── model.json
-│       └── group1-shard1of1.bin
-├── package.json
-├── .env.example
-└── README.md
+├── app.py              # Main Flask application
+├── db.py               # Database connection
+├── models.py           # SQLAlchemy models
+├── requirements.txt    # Python dependencies
+├── models/            # TFLite model files
+│   ├── best_float32.tflite         # YOLOv8 detection
+│   └── classifier_float32.tflite   # MobileNetV3 classification
+└── .env               # Environment configuration
 ```
 
-## 📦 Installation
+## API Endpoints
 
-### Prerequisites
+### Model Operations
+- `POST /api/model/run` - Run inference
+  - Body: `{ "image": "base64_string", "user_id": 1 }`
+  - Returns: Detection + classification results
 
-- Node.js >= 18.0.0
-- npm or yarn
+- `GET /api/model/status` - Model status
+- `GET /health` - Health check
 
-### Steps
+### Authentication
+- `POST /api/auth/login` - Login
+  - Body: `{ "username": "admin", "password": "admin123" }`
+- `POST /api/auth/register` - Register new user
 
-1. **Navigate to backend directory:**
-   ```bash
-   cd backend
-   ```
+### History
+- `GET /api/history?user_id=1` - User history
+- `GET /api/history/all` - All history (admin)
 
-2. **Install dependencies:**
-   ```bash
-   npm install
-   ```
+## Models
 
-3. **Create environment file:**
-   ```bash
-   cp .env.example .env
-   ```
+**Detection Model** (`best_float32.tflite`)
+- Architecture: YOLOv8
+- Input: 640x640x3 RGB image
+- Output: [1, 5, 8400] - detections with bounding boxes
 
-4. **Configure environment variables** (optional):
-   ```env
-   PORT=5000
-   MODEL_PATH=./models/palm-oil-model/model.json
-   INPUT_SIZE=224
-   ```
+**Classification Model** (`classifier_float32.tflite`)
+- Architecture: MobileNetV3
+- Input: 224x224x3 RGB image (cropped bunch)
+- Output: [1, 3] - probabilities for [unripe, ripe, over_ripe]
 
-## 🤖 Model Setup
+## Database Schema
 
-### Option 1: Convert TFLite to TensorFlow.js (Recommended)
+**users**
+- id, username, password_hash, created_at
 
-If you have a `.tflite` model file, convert it first:
+**grading_history**
+- id, user_id, image_url, predictions, top_class, confidence, inference_time, created_at
 
+## Troubleshooting
+
+**Module not found:**
 ```bash
-# Install converter
-pip install tensorflowjs
-
-# Convert SavedModel to TensorFlow.js
-tensorflowjs_converter \
-  --input_format=tf_saved_model \
-  --output_format=tfjs_graph_model \
-  ./your_saved_model \
-  ./backend/models/palm-oil-model
+pip install -r requirements.txt
 ```
 
-This creates:
-```
-backend/models/palm-oil-model/
-├── model.json
-└── group1-shard1of1.bin
-```
+**Database connection failed:**
+- Check PostgreSQL is running
+- Verify credentials in `.env`
+- Ensure database exists
 
-### Option 2: Use Existing TensorFlow.js Model
-
-If you already have a converted model:
-
-```bash
-# Place your model files in:
-backend/models/palm-oil-model/
-├── model.json
-└── group1-shard*.bin
-```
-
-## 🚀 Running the Backend
-
-### Development Mode (with auto-reload)
-
-```bash
-npm run dev
-```
-
-### Production Mode
+**Model not loading:**
+- Check model files exist in `models/`
+- Verify TensorFlow: `pip install tensorflow==2.15.0`
 
 ```bash
 npm start
