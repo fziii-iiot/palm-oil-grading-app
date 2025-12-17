@@ -143,9 +143,10 @@ def warmup_model(interpreter: tf.lite.Interpreter, input_spec: Dict[str, Any], m
 # -------------------------
 # Preprocessing
 # -------------------------
-def preprocess_image(image_data_b64: str, interpreter: tf.lite.Interpreter, input_spec: Dict[str, Any]) -> np.ndarray:
+def preprocess_image(image_data_b64: str, interpreter: tf.lite.Interpreter, input_spec: Dict[str, Any], is_detection: bool = False) -> np.ndarray:
     """
     Decode base64 and prepare tensor based on interpreter input spec.
+    For detection model, crops to 1:1 aspect ratio (square) before resizing.
     Returns an array matching interpreter input shape & dtype.
     """
     if interpreter is None:
@@ -160,6 +161,19 @@ def preprocess_image(image_data_b64: str, interpreter: tf.lite.Interpreter, inpu
     # Force RGB
     if image.mode != "RGB":
         image = image.convert("RGB")
+
+    # For detection model, crop to 1:1 aspect ratio (square) first
+    if is_detection:
+        width, height = image.size
+        if width != height:
+            # Crop to center square
+            size = min(width, height)
+            left = (width - size) // 2
+            top = (height - size) // 2
+            right = left + size
+            bottom = top + size
+            image = image.crop((left, top, right, bottom))
+            print(f"[preprocess] Cropped to square: {width}x{height} -> {size}x{size}", flush=True)
 
     in_shape = input_spec['shape']  # e.g. [1, H, W, 3]
     in_dtype = input_spec['dtype']
@@ -176,10 +190,15 @@ def preprocess_image(image_data_b64: str, interpreter: tf.lite.Interpreter, inpu
     image = image.resize((target_w, target_h), Image.LANCZOS)
     arr = np.array(image)
 
-    # Cast according to dtype
-    if np.issubdtype(np.dtype(in_dtype), np.floating):
-        arr = arr.astype(np.float32) / 255.0  # common practice
+    # Normalize based on model type
+    # Detection model: normalize to [0,1] (matches pipeline.py detector)
+    # Classification model: keep raw [0-255] (matches pipeline.py classifier)
+    in_dtype = input_spec['dtype']
+    if is_detection:
+        # Detection model needs normalization
+        arr = arr.astype(np.float32) / 255.0
     else:
+        # Classification model uses raw values
         arr = arr.astype(np.dtype(in_dtype))
 
     # Add batch if missing
@@ -224,8 +243,8 @@ def parse_detection_from_outputs(output_data: List[np.ndarray]) -> Dict[str, Any
                     x_center, y_center, width, height, confidence = detection
                     confidence = float(confidence)
                     
-                    # Skip very low confidence detections
-                    if confidence < 0.25:  # Lower threshold for initial detection
+                    # Skip low confidence detections
+                    if confidence < CONFIDENCE_THRESHOLD:  # Detection confidence threshold
                         continue
                     
                     # Convert from center format to corner format (normalized 0-1)
@@ -257,7 +276,7 @@ def parse_detection_from_outputs(output_data: List[np.ndarray]) -> Dict[str, Any
                     confidence = float(class_probs[class_id])
                     
                     # Skip low confidence detections
-                    if confidence < 0.25:
+                    if confidence < CONFIDENCE_THRESHOLD:
                         continue
                     
                     # Convert from center format to corner format
@@ -380,14 +399,11 @@ def parse_classification_from_output(output_data: List[np.ndarray]) -> Dict[str,
     top_idx = int(np.argmax(probs_list))
     top_conf = float(probs_list[top_idx])
     
-    # Apply confidence threshold for FruitBunch detection
-    # If confidence is high, it's FruitBunch; if low, it's NotFruitBunch
-    if top_conf >= CONFIDENCE_THRESHOLD:
-        label = DETECTION_LABEL  # FruitBunch
-    else:
-        label = NOT_FRUIT_BUNCH_LABEL  # NotFruitBunch
+    # For ripeness classification, return the actual class label
+    label = CLASS_LABELS[top_idx] if top_idx < len(CLASS_LABELS) else 'Unknown'
     
-    print(f"[parse_classification] top_conf={top_conf}, threshold={CONFIDENCE_THRESHOLD}, label={label}", flush=True)
+    print(f"[parse_classification] Predictions: {[f'{CLASS_LABELS[i]}={probs_list[i]:.3f}' for i in range(len(probs_list))]}", flush=True)
+    print(f"[parse_classification] top_class={label} (index={top_idx}), confidence={top_conf:.3f}", flush=True)
     
     return {
         'predictions': probs_list,
@@ -409,15 +425,31 @@ def run_inference(image_data_b64: str) -> Dict[str, Any]:
     start = time.time()
     
     try:
-        # Decode the full image for cropping
+        # Decode the full image
         import base64
         from PIL import Image
         import io
         
         img_bytes = base64.b64decode(image_data_b64.split(',')[1] if ',' in image_data_b64 else image_data_b64)
-        full_image = Image.open(io.BytesIO(img_bytes)).convert('RGB')
-        img_width, img_height = full_image.size
-        print(f"[DEBUG] Image size: {img_width}x{img_height}", flush=True)
+        original_image = Image.open(io.BytesIO(img_bytes)).convert('RGB')
+        orig_width, orig_height = original_image.size
+        print(f"[DEBUG] Original image size: {orig_width}x{orig_height}", flush=True)
+        
+        # Crop to center square (same as detection preprocessing)
+        # This ensures bounding box coordinates match the image we'll crop from
+        if orig_width != orig_height:
+            size = min(orig_width, orig_height)
+            left = (orig_width - size) // 2
+            top = (orig_height - size) // 2
+            right = left + size
+            bottom = top + size
+            square_image = original_image.crop((left, top, right, bottom))
+            print(f"[DEBUG] Cropped to square: {orig_width}x{orig_height} -> {size}x{size}", flush=True)
+        else:
+            square_image = original_image
+        
+        img_width, img_height = square_image.size  # Should be equal (square)
+        
     except Exception as e:
         print(f"❌ Error decoding image: {e}", flush=True)
         traceback.print_exc()
@@ -436,7 +468,14 @@ def run_inference(image_data_b64: str) -> Dict[str, Any]:
     
     # Step 1: Run detection model to find all bunches
     print("🔍 Running detection model...", flush=True)
-    img_tensor_det = preprocess_image(image_data_b64, detection_interpreter, detection_input_spec)
+    
+    # Convert square image to base64 for preprocessing
+    buffered = io.BytesIO()
+    square_image.save(buffered, format="JPEG")
+    square_b64 = base64.b64encode(buffered.getvalue()).decode('utf-8')
+    square_b64 = f"data:image/jpeg;base64,{square_b64}"
+    
+    img_tensor_det = preprocess_image(square_b64, detection_interpreter, detection_input_spec, is_detection=True)  # Detection needs normalization
     
     detection_interpreter.set_tensor(detection_input_spec['index'], img_tensor_det)
     detection_interpreter.invoke()
@@ -476,8 +515,10 @@ def run_inference(image_data_b64: str) -> Dict[str, Any]:
                 
                 print(f"[DEBUG] Bunch {idx+1} crop coords: x1={x1}, y1={y1}, x2={x2}, y2={y2}", flush=True)
                 
-                # Crop the bunch from the full image
-                cropped_bunch = full_image.crop((x1, y1, x2, y2))
+                # Crop the bunch from the SQUARE image (not original)
+                cropped_bunch = square_image.crop((x1, y1, x2, y2))
+                crop_width, crop_height = cropped_bunch.size
+                print(f"[DEBUG] Bunch {idx+1} cropped size: {crop_width}x{crop_height}", flush=True)
                 
                 # Convert cropped image to base64 for preprocessing
                 buffered = io.BytesIO()
@@ -488,6 +529,9 @@ def run_inference(image_data_b64: str) -> Dict[str, Any]:
                 # Preprocess and run classification on this specific bunch
                 img_tensor_cls = preprocess_image(cropped_b64, classification_interpreter, classification_input_spec)
                 
+                # Log preprocessing info
+                print(f"[DEBUG] Bunch {idx+1} tensor shape: {img_tensor_cls.shape}, dtype: {img_tensor_cls.dtype}, range: [{img_tensor_cls.min():.3f}, {img_tensor_cls.max():.3f}]", flush=True)
+                
                 classification_interpreter.set_tensor(classification_input_spec['index'], img_tensor_cls)
                 classification_interpreter.invoke()
                 
@@ -495,6 +539,13 @@ def run_inference(image_data_b64: str) -> Dict[str, Any]:
                               for od in classification_interpreter.get_output_details()]
                 
                 parsed_classification = parse_classification_from_output(cls_outputs)
+                
+                # Debug: Print raw predictions for all classes
+                predictions_raw = parsed_classification['predictions']
+                print(f"  Bunch {idx+1} raw predictions:", flush=True)
+                for i, prob in enumerate(predictions_raw):
+                    print(f"    {CLASS_LABELS[i]}: {prob:.4f} ({prob*100:.2f}%)", flush=True)
+                
                 class_label = CLASS_LABELS[parsed_classification['topClass']]
                 class_confidence = parsed_classification['confidence']
                 

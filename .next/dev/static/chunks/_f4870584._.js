@@ -594,10 +594,13 @@ function CameraCapture({ onCapture, onCancel }) {
                             ideal: 'environment'
                         },
                         width: {
-                            ideal: 1920
+                            ideal: 720
                         },
                         height: {
-                            ideal: 1080
+                            ideal: 720
+                        },
+                        aspectRatio: {
+                            ideal: 1
                         }
                     },
                     audio: false
@@ -636,11 +639,18 @@ function CameraCapture({ onCapture, onCancel }) {
             if (!videoRef.current || !canvasRef.current) return;
             const video = videoRef.current;
             const canvas = canvasRef.current;
-            canvas.width = video.videoWidth;
-            canvas.height = video.videoHeight;
+            // Ensure square capture (1:1 aspect ratio) at 720x720
+            const size = Math.min(video.videoWidth, video.videoHeight);
+            canvas.width = 720;
+            canvas.height = 720;
             const context = canvas.getContext('2d');
             if (context) {
-                context.drawImage(video, 0, 0, canvas.width, canvas.height);
+                // Calculate crop to center square
+                const sx = (video.videoWidth - size) / 2;
+                const sy = (video.videoHeight - size) / 2;
+                // Draw centered square crop, scaled to 720x720
+                context.drawImage(video, sx, sy, size, size, 0, 0, 720, 720 // Destination: 720x720 canvas
+                );
                 const dataUrl = canvas.toDataURL('image/jpeg', 0.9);
                 setCapturedImage(dataUrl);
                 stopCamera();
@@ -692,183 +702,230 @@ function CameraCapture({ onCapture, onCancel }) {
         className: "flex-1 flex flex-col bg-background",
         children: [
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                className: "flex-1 relative overflow-hidden bg-black",
+                className: "flex-1 relative overflow-hidden bg-black flex items-center justify-center",
                 children: [
-                    !capturedImage && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("video", {
-                        ref: videoRef,
-                        autoPlay: true,
-                        playsInline: true,
-                        muted: true,
-                        className: "absolute inset-0 w-full h-full object-cover"
-                    }, void 0, false, {
-                        fileName: "[project]/components/camera-capture.tsx",
-                        lineNumber: 111,
-                        columnNumber: 11
-                    }, this),
-                    capturedImage && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("img", {
-                        src: capturedImage,
-                        alt: "Captured bunch",
-                        className: "absolute inset-0 w-full h-full object-cover"
-                    }, void 0, false, {
-                        fileName: "[project]/components/camera-capture.tsx",
-                        lineNumber: 121,
-                        columnNumber: 11
-                    }, this),
-                    isLoading && !capturedImage && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                        className: "absolute inset-0 flex items-center justify-center bg-black",
-                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                            className: "flex flex-col items-center gap-3",
-                            children: [
-                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                    className: "animate-spin rounded-full h-12 w-12 border-4 border-primary border-t-transparent"
-                                }, void 0, false, {
-                                    fileName: "[project]/components/camera-capture.tsx",
-                                    lineNumber: 131,
-                                    columnNumber: 15
-                                }, this),
-                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                    className: "text-sm text-white",
-                                    children: "Initializing camera..."
-                                }, void 0, false, {
-                                    fileName: "[project]/components/camera-capture.tsx",
-                                    lineNumber: 132,
-                                    columnNumber: 15
-                                }, this)
-                            ]
-                        }, void 0, true, {
-                            fileName: "[project]/components/camera-capture.tsx",
-                            lineNumber: 130,
-                            columnNumber: 13
-                        }, this)
-                    }, void 0, false, {
-                        fileName: "[project]/components/camera-capture.tsx",
-                        lineNumber: 129,
-                        columnNumber: 11
-                    }, this),
-                    error && !capturedImage && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                        className: "absolute inset-0 flex items-center justify-center bg-black p-6",
-                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                            className: "flex flex-col items-center gap-4 text-center max-w-sm",
-                            children: [
-                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$camera$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Camera$3e$__["Camera"], {
-                                    className: "w-16 h-16 text-destructive"
-                                }, void 0, false, {
-                                    fileName: "[project]/components/camera-capture.tsx",
-                                    lineNumber: 140,
-                                    columnNumber: 15
-                                }, this),
-                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                        className: "relative w-full max-w-[720px] aspect-square",
+                        children: [
+                            !capturedImage && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("video", {
+                                ref: videoRef,
+                                autoPlay: true,
+                                playsInline: true,
+                                muted: true,
+                                className: "absolute inset-0 w-full h-full object-cover"
+                            }, void 0, false, {
+                                fileName: "[project]/components/camera-capture.tsx",
+                                lineNumber: 125,
+                                columnNumber: 13
+                            }, this),
+                            capturedImage && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("img", {
+                                src: capturedImage,
+                                alt: "Captured bunch",
+                                className: "absolute inset-0 w-full h-full object-cover"
+                            }, void 0, false, {
+                                fileName: "[project]/components/camera-capture.tsx",
+                                lineNumber: 135,
+                                columnNumber: 13
+                            }, this),
+                            isLoading && !capturedImage && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                className: "absolute inset-0 flex items-center justify-center bg-black",
+                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                    className: "flex flex-col items-center gap-3",
                                     children: [
-                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                            className: "text-sm font-medium text-white mb-2",
-                                            children: "Camera Error"
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                            className: "animate-spin rounded-full h-12 w-12 border-4 border-primary border-t-transparent"
                                         }, void 0, false, {
                                             fileName: "[project]/components/camera-capture.tsx",
-                                            lineNumber: 142,
+                                            lineNumber: 145,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                            className: "text-xs text-white/70",
-                                            children: error
+                                            className: "text-sm text-white",
+                                            children: "Initializing camera..."
                                         }, void 0, false, {
                                             fileName: "[project]/components/camera-capture.tsx",
-                                            lineNumber: 143,
+                                            lineNumber: 146,
                                             columnNumber: 17
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/components/camera-capture.tsx",
-                                    lineNumber: 141,
-                                    columnNumber: 15
-                                }, this),
-                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
-                                    variant: "outline",
-                                    size: "sm",
-                                    onClick: handleRetake,
-                                    className: "mt-2 bg-white/10 border-white/20 text-white hover:bg-white/20",
-                                    children: "Try Again"
-                                }, void 0, false, {
-                                    fileName: "[project]/components/camera-capture.tsx",
-                                    lineNumber: 145,
+                                    lineNumber: 144,
                                     columnNumber: 15
                                 }, this)
-                            ]
-                        }, void 0, true, {
-                            fileName: "[project]/components/camera-capture.tsx",
-                            lineNumber: 139,
-                            columnNumber: 13
-                        }, this)
-                    }, void 0, false, {
-                        fileName: "[project]/components/camera-capture.tsx",
-                        lineNumber: 138,
-                        columnNumber: 11
-                    }, this),
-                    isStreaming && !capturedImage && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                        className: "absolute inset-0 pointer-events-none",
-                        children: [
-                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                className: "absolute inset-4 border-2 border-white/40 rounded-2xl shadow-lg"
                             }, void 0, false, {
                                 fileName: "[project]/components/camera-capture.tsx",
-                                lineNumber: 159,
+                                lineNumber: 143,
                                 columnNumber: 13
                             }, this),
-                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                className: "absolute top-8 left-0 right-0 text-center",
+                            error && !capturedImage && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                className: "absolute inset-0 flex items-center justify-center bg-black p-6",
                                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                    className: "inline-block bg-black/50 backdrop-blur-sm px-4 py-2 rounded-full",
-                                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                        className: "text-xs text-white font-medium",
-                                        children: "Position the bunch within the frame"
-                                    }, void 0, false, {
-                                        fileName: "[project]/components/camera-capture.tsx",
-                                        lineNumber: 162,
-                                        columnNumber: 17
-                                    }, this)
-                                }, void 0, false, {
+                                    className: "flex flex-col items-center gap-4 text-center max-w-sm",
+                                    children: [
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$camera$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Camera$3e$__["Camera"], {
+                                            className: "w-16 h-16 text-destructive"
+                                        }, void 0, false, {
+                                            fileName: "[project]/components/camera-capture.tsx",
+                                            lineNumber: 154,
+                                            columnNumber: 17
+                                        }, this),
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                            children: [
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                                    className: "text-sm font-medium text-white mb-2",
+                                                    children: "Camera Error"
+                                                }, void 0, false, {
+                                                    fileName: "[project]/components/camera-capture.tsx",
+                                                    lineNumber: 156,
+                                                    columnNumber: 19
+                                                }, this),
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                                    className: "text-xs text-white/70",
+                                                    children: error
+                                                }, void 0, false, {
+                                                    fileName: "[project]/components/camera-capture.tsx",
+                                                    lineNumber: 157,
+                                                    columnNumber: 19
+                                                }, this)
+                                            ]
+                                        }, void 0, true, {
+                                            fileName: "[project]/components/camera-capture.tsx",
+                                            lineNumber: 155,
+                                            columnNumber: 17
+                                        }, this),
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
+                                            variant: "outline",
+                                            size: "sm",
+                                            onClick: handleRetake,
+                                            className: "mt-2 bg-white/10 border-white/20 text-white hover:bg-white/20",
+                                            children: "Try Again"
+                                        }, void 0, false, {
+                                            fileName: "[project]/components/camera-capture.tsx",
+                                            lineNumber: 159,
+                                            columnNumber: 17
+                                        }, this)
+                                    ]
+                                }, void 0, true, {
                                     fileName: "[project]/components/camera-capture.tsx",
-                                    lineNumber: 161,
+                                    lineNumber: 153,
                                     columnNumber: 15
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/components/camera-capture.tsx",
-                                lineNumber: 160,
+                                lineNumber: 152,
+                                columnNumber: 13
+                            }, this),
+                            isStreaming && !capturedImage && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                className: "absolute inset-0 pointer-events-none",
+                                children: [
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                        className: "absolute inset-0 border-4 border-white/60 rounded-lg shadow-2xl"
+                                    }, void 0, false, {
+                                        fileName: "[project]/components/camera-capture.tsx",
+                                        lineNumber: 174,
+                                        columnNumber: 15
+                                    }, this),
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                        className: "absolute top-0 left-0 w-8 h-8 border-t-4 border-l-4 border-primary"
+                                    }, void 0, false, {
+                                        fileName: "[project]/components/camera-capture.tsx",
+                                        lineNumber: 177,
+                                        columnNumber: 15
+                                    }, this),
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                        className: "absolute top-0 right-0 w-8 h-8 border-t-4 border-r-4 border-primary"
+                                    }, void 0, false, {
+                                        fileName: "[project]/components/camera-capture.tsx",
+                                        lineNumber: 178,
+                                        columnNumber: 15
+                                    }, this),
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                        className: "absolute bottom-0 left-0 w-8 h-8 border-b-4 border-l-4 border-primary"
+                                    }, void 0, false, {
+                                        fileName: "[project]/components/camera-capture.tsx",
+                                        lineNumber: 179,
+                                        columnNumber: 15
+                                    }, this),
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                        className: "absolute bottom-0 right-0 w-8 h-8 border-b-4 border-r-4 border-primary"
+                                    }, void 0, false, {
+                                        fileName: "[project]/components/camera-capture.tsx",
+                                        lineNumber: 180,
+                                        columnNumber: 15
+                                    }, this),
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                        className: "absolute top-4 left-0 right-0 text-center",
+                                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                            className: "inline-block bg-black/60 backdrop-blur-sm px-4 py-2 rounded-full border border-white/30",
+                                            children: [
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                                    className: "text-xs text-white font-medium",
+                                                    children: "Position the bunch within the frame"
+                                                }, void 0, false, {
+                                                    fileName: "[project]/components/camera-capture.tsx",
+                                                    lineNumber: 185,
+                                                    columnNumber: 19
+                                                }, this),
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                                    className: "text-[10px] text-white/70 mt-0.5",
+                                                    children: "Ensure Good Lighting for Best Result"
+                                                }, void 0, false, {
+                                                    fileName: "[project]/components/camera-capture.tsx",
+                                                    lineNumber: 188,
+                                                    columnNumber: 19
+                                                }, this)
+                                            ]
+                                        }, void 0, true, {
+                                            fileName: "[project]/components/camera-capture.tsx",
+                                            lineNumber: 184,
+                                            columnNumber: 17
+                                        }, this)
+                                    }, void 0, false, {
+                                        fileName: "[project]/components/camera-capture.tsx",
+                                        lineNumber: 183,
+                                        columnNumber: 15
+                                    }, this)
+                                ]
+                            }, void 0, true, {
+                                fileName: "[project]/components/camera-capture.tsx",
+                                lineNumber: 172,
+                                columnNumber: 13
+                            }, this),
+                            onCancel && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                                onClick: handleCancel,
+                                className: "absolute top-4 right-4 z-10 p-2 rounded-full bg-black/50 backdrop-blur-sm hover:bg-black/70 transition-colors",
+                                "aria-label": "Cancel",
+                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$x$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__X$3e$__["X"], {
+                                    className: "w-5 h-5 text-white"
+                                }, void 0, false, {
+                                    fileName: "[project]/components/camera-capture.tsx",
+                                    lineNumber: 202,
+                                    columnNumber: 15
+                                }, this)
+                            }, void 0, false, {
+                                fileName: "[project]/components/camera-capture.tsx",
+                                lineNumber: 197,
                                 columnNumber: 13
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/components/camera-capture.tsx",
-                        lineNumber: 158,
-                        columnNumber: 11
-                    }, this),
-                    onCancel && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-                        onClick: handleCancel,
-                        className: "absolute top-4 right-4 z-10 p-2 rounded-full bg-black/50 backdrop-blur-sm hover:bg-black/70 transition-colors",
-                        "aria-label": "Cancel",
-                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$x$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__X$3e$__["X"], {
-                            className: "w-5 h-5 text-white"
-                        }, void 0, false, {
-                            fileName: "[project]/components/camera-capture.tsx",
-                            lineNumber: 176,
-                            columnNumber: 13
-                        }, this)
-                    }, void 0, false, {
-                        fileName: "[project]/components/camera-capture.tsx",
-                        lineNumber: 171,
-                        columnNumber: 11
+                        lineNumber: 123,
+                        columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("canvas", {
                         ref: canvasRef,
                         className: "hidden"
                     }, void 0, false, {
                         fileName: "[project]/components/camera-capture.tsx",
-                        lineNumber: 180,
+                        lineNumber: 207,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/components/camera-capture.tsx",
-                lineNumber: 109,
+                lineNumber: 121,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -883,14 +940,14 @@ function CameraCapture({ onCapture, onCancel }) {
                             className: "w-5 h-5"
                         }, void 0, false, {
                             fileName: "[project]/components/camera-capture.tsx",
-                            lineNumber: 192,
+                            lineNumber: 219,
                             columnNumber: 13
                         }, this),
                         "Take Photo"
                     ]
                 }, void 0, true, {
                     fileName: "[project]/components/camera-capture.tsx",
-                    lineNumber: 186,
+                    lineNumber: 213,
                     columnNumber: 11
                 }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                     className: "flex gap-3",
@@ -905,14 +962,14 @@ function CameraCapture({ onCapture, onCancel }) {
                                     className: "w-5 h-5"
                                 }, void 0, false, {
                                     fileName: "[project]/components/camera-capture.tsx",
-                                    lineNumber: 203,
+                                    lineNumber: 230,
                                     columnNumber: 15
                                 }, this),
                                 "Retake"
                             ]
                         }, void 0, true, {
                             fileName: "[project]/components/camera-capture.tsx",
-                            lineNumber: 197,
+                            lineNumber: 224,
                             columnNumber: 13
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -922,24 +979,24 @@ function CameraCapture({ onCapture, onCancel }) {
                             children: "Confirm"
                         }, void 0, false, {
                             fileName: "[project]/components/camera-capture.tsx",
-                            lineNumber: 206,
+                            lineNumber: 233,
                             columnNumber: 13
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/components/camera-capture.tsx",
-                    lineNumber: 196,
+                    lineNumber: 223,
                     columnNumber: 11
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/components/camera-capture.tsx",
-                lineNumber: 184,
+                lineNumber: 211,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/components/camera-capture.tsx",
-        lineNumber: 108,
+        lineNumber: 120,
         columnNumber: 5
     }, this);
 }
@@ -1071,6 +1128,7 @@ function CapturePage({ onCapture, onInferenceComplete }) {
     const [error, setError] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])('');
     const [isModelWarmedUp, setIsModelWarmedUp] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(false);
     const [isSaved, setIsSaved] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(false);
+    const [annotatedImageDataUrl, setAnnotatedImageDataUrl] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])('');
     // No model warmup needed for backend inference
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
         "CapturePage.useEffect": ()=>{
@@ -1078,6 +1136,18 @@ function CapturePage({ onCapture, onInferenceComplete }) {
             console.log('[CapturePage] Backend ready for inference');
         }
     }["CapturePage.useEffect"], []);
+    // Color mapping for classifications (matching config.yaml reference)
+    const getClassColor = (classification)=>{
+        const classLower = classification?.toLowerCase() || '';
+        if (classLower.includes('unripe')) return '#00FF00' // Green
+        ;
+        if (classLower.includes('ripe') && !classLower.includes('over')) return '#FFA500' // Orange
+        ;
+        if (classLower.includes('over')) return '#FF0000' // Red
+        ;
+        return '#808080' // Gray for unknown
+        ;
+    };
     const handleCaptureComplete = async (dataUrl)=>{
         // Store captured image immediately and ensure it persists
         setCapturedImage(dataUrl);
@@ -1103,6 +1173,53 @@ function CapturePage({ onCapture, onInferenceComplete }) {
             setViewState('error');
         // capturedImage is preserved for error view
         }
+    };
+    const handleImageUpload = (event)=>{
+        const file = event.target.files?.[0];
+        if (!file) return;
+        // Validate file type
+        if (!file.type.startsWith('image/')) {
+            setError('Please select a valid image file');
+            setViewState('error');
+            return;
+        }
+        // Validate file size (max 10MB)
+        if (file.size > 10 * 1024 * 1024) {
+            setError('Image size must be less than 10MB');
+            setViewState('error');
+            return;
+        }
+        console.log('[CapturePage] Image uploaded:', file.name);
+        // Convert uploaded file to data URL
+        const reader = new FileReader();
+        reader.onload = async (e)=>{
+            const dataUrl = e.target?.result;
+            if (dataUrl) {
+                // Process the uploaded image similar to camera capture
+                // First create a 720x720 square crop
+                const img = new Image();
+                img.onload = ()=>{
+                    const canvas = document.createElement('canvas');
+                    const ctx = canvas.getContext('2d');
+                    if (!ctx) return;
+                    // Crop to center square and resize to 720x720
+                    const size = Math.min(img.width, img.height);
+                    const sx = (img.width - size) / 2;
+                    const sy = (img.height - size) / 2;
+                    canvas.width = 720;
+                    canvas.height = 720;
+                    ctx.drawImage(img, sx, sy, size, size, 0, 0, 720, 720);
+                    const squareDataUrl = canvas.toDataURL('image/jpeg', 0.95);
+                    handleCaptureComplete(squareDataUrl);
+                };
+                img.src = dataUrl;
+            }
+        };
+        reader.onerror = ()=>{
+            setError('Failed to read image file');
+            setViewState('error');
+        };
+        reader.readAsDataURL(file);
     };
     // Backend inference function
     async function runInference(imageDataUrl) {
@@ -1162,19 +1279,60 @@ function CapturePage({ onCapture, onInferenceComplete }) {
             return;
         }
         try {
-            const savedRecord = (0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$storage$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["saveGradingRecord"])({
-                imageUrl: capturedImage,
-                predictions: inferenceResult.predictions || [],
-                topClass: inferenceResult.topClass || 0,
-                confidence: inferenceResult.confidence || 0,
-                inferenceTime: inferenceResult.inferenceTime
-            });
-            console.log('[CapturePage] Result saved to history:', savedRecord.id);
-            setIsSaved(true);
-            // Show confirmation for 2 seconds
-            setTimeout(()=>{
-            // Could navigate to history page here if needed
-            }, 2000);
+            // Generate annotated image on-demand when saving
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            const img = new Image();
+            img.onload = ()=>{
+                canvas.width = img.width;
+                canvas.height = img.height;
+                ctx?.drawImage(img, 0, 0);
+                // Draw bounding boxes with classifications
+                if (inferenceResult.bunches && inferenceResult.bunches.length > 0) {
+                    inferenceResult.bunches.forEach((bunch)=>{
+                        if (ctx && bunch.box) {
+                            const [ymin, xmin, ymax, xmax] = bunch.box;
+                            const x = xmin * img.width;
+                            const y = ymin * img.height;
+                            const width = (xmax - xmin) * img.width;
+                            const height = (ymax - ymin) * img.height;
+                            const classification = bunch.classification || 'Unknown';
+                            const confidence = bunch.classification_confidence || 0;
+                            const color = getClassColor(classification);
+                            // Draw box
+                            ctx.strokeStyle = color;
+                            ctx.lineWidth = 3;
+                            ctx.strokeRect(x, y, width, height);
+                            // Draw label
+                            const labelText = `${classification}: ${confidence.toFixed(2)}`;
+                            ctx.font = 'bold 16px sans-serif';
+                            const textMetrics = ctx.measureText(labelText);
+                            const labelHeight = 24;
+                            const labelWidth = textMetrics.width + 12;
+                            ctx.fillStyle = color;
+                            ctx.fillRect(x, y - labelHeight, labelWidth, labelHeight);
+                            ctx.fillStyle = '#ffffff';
+                            ctx.fillText(labelText, x + 6, y - 6);
+                        }
+                    });
+                }
+                // Get annotated image
+                const annotatedImage = canvas.toDataURL('image/jpeg', 0.95);
+                // Save to storage with annotated image
+                const savedRecord = (0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$storage$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["saveGradingRecord"])({
+                    imageUrl: annotatedImage,
+                    predictions: inferenceResult.predictions || [],
+                    topClass: inferenceResult.topClass || 0,
+                    confidence: inferenceResult.confidence || 0,
+                    inferenceTime: inferenceResult.inferenceTime,
+                    totalBunches: inferenceResult.total_bunches,
+                    classificationSummary: inferenceResult.classification_summary,
+                    dominantClassification: inferenceResult.dominant_classification
+                });
+                console.log('[CapturePage] Result saved to history with bounding boxes:', savedRecord.id);
+                setIsSaved(true);
+            };
+            img.src = capturedImage;
         } catch (err) {
             console.error('[CapturePage] Failed to save result:', err);
             setError(err instanceof Error ? err.message : 'Failed to save result');
@@ -1187,7 +1345,7 @@ function CapturePage({ onCapture, onInferenceComplete }) {
             onCancel: handleCancelCamera
         }, void 0, false, {
             fileName: "[project]/components/pages/capture-page.tsx",
-            lineNumber: 176,
+            lineNumber: 291,
             columnNumber: 7
         }, this);
     }
@@ -1207,7 +1365,7 @@ function CapturePage({ onCapture, onInferenceComplete }) {
                                 className: "w-full h-full object-cover"
                             }, void 0, false, {
                                 fileName: "[project]/components/pages/capture-page.tsx",
-                                lineNumber: 190,
+                                lineNumber: 305,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1219,7 +1377,7 @@ function CapturePage({ onCapture, onInferenceComplete }) {
                                             className: "w-12 h-12 text-primary animate-spin"
                                         }, void 0, false, {
                                             fileName: "[project]/components/pages/capture-page.tsx",
-                                            lineNumber: 197,
+                                            lineNumber: 312,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1230,7 +1388,7 @@ function CapturePage({ onCapture, onInferenceComplete }) {
                                                     children: "Analyzing Image"
                                                 }, void 0, false, {
                                                     fileName: "[project]/components/pages/capture-page.tsx",
-                                                    lineNumber: 199,
+                                                    lineNumber: 314,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1238,30 +1396,30 @@ function CapturePage({ onCapture, onInferenceComplete }) {
                                                     children: "Running AI inference..."
                                                 }, void 0, false, {
                                                     fileName: "[project]/components/pages/capture-page.tsx",
-                                                    lineNumber: 200,
+                                                    lineNumber: 315,
                                                     columnNumber: 19
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/components/pages/capture-page.tsx",
-                                            lineNumber: 198,
+                                            lineNumber: 313,
                                             columnNumber: 17
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/components/pages/capture-page.tsx",
-                                    lineNumber: 196,
+                                    lineNumber: 311,
                                     columnNumber: 15
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/components/pages/capture-page.tsx",
-                                lineNumber: 195,
+                                lineNumber: 310,
                                 columnNumber: 13
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/components/pages/capture-page.tsx",
-                        lineNumber: 189,
+                        lineNumber: 304,
                         columnNumber: 11
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1272,7 +1430,7 @@ function CapturePage({ onCapture, onInferenceComplete }) {
                                 children: "🔒 Processing on your device"
                             }, void 0, false, {
                                 fileName: "[project]/components/pages/capture-page.tsx",
-                                lineNumber: 209,
+                                lineNumber: 324,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1280,24 +1438,24 @@ function CapturePage({ onCapture, onInferenceComplete }) {
                                 children: "No data sent to server"
                             }, void 0, false, {
                                 fileName: "[project]/components/pages/capture-page.tsx",
-                                lineNumber: 212,
+                                lineNumber: 327,
                                 columnNumber: 13
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/components/pages/capture-page.tsx",
-                        lineNumber: 208,
+                        lineNumber: 323,
                         columnNumber: 11
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/components/pages/capture-page.tsx",
-                lineNumber: 187,
+                lineNumber: 302,
                 columnNumber: 9
             }, this)
         }, void 0, false, {
             fileName: "[project]/components/pages/capture-page.tsx",
-            lineNumber: 186,
+            lineNumber: 301,
             columnNumber: 7
         }, this);
     }
@@ -1309,18 +1467,6 @@ function CapturePage({ onCapture, onInferenceComplete }) {
         console.log('[Result View] totalBunches:', totalBunches);
         console.log('[Result View] bunches:', inferenceResult.bunches);
         console.log('[Result View] capturedImage length:', capturedImage?.length);
-        // Color mapping for classifications (matching config.yaml reference)
-        const getClassColor = (classification)=>{
-            const classLower = classification?.toLowerCase() || '';
-            if (classLower.includes('unripe')) return '#00FF00' // Green
-            ;
-            if (classLower.includes('ripe') && !classLower.includes('over')) return '#FFA500' // Orange
-            ;
-            if (classLower.includes('over')) return '#FF0000' // Red
-            ;
-            return '#808080' // Gray for unknown
-            ;
-        };
         return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
             className: "flex-1 flex flex-col p-6 pb-24 bg-background overflow-y-auto",
             children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1335,12 +1481,12 @@ function CapturePage({ onCapture, onInferenceComplete }) {
                                     className: "w-6 h-6 text-primary"
                                 }, void 0, false, {
                                     fileName: "[project]/components/pages/capture-page.tsx",
-                                    lineNumber: 246,
+                                    lineNumber: 352,
                                     columnNumber: 15
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/components/pages/capture-page.tsx",
-                                lineNumber: 245,
+                                lineNumber: 351,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1351,7 +1497,7 @@ function CapturePage({ onCapture, onInferenceComplete }) {
                                         children: "Analysis Complete"
                                     }, void 0, false, {
                                         fileName: "[project]/components/pages/capture-page.tsx",
-                                        lineNumber: 249,
+                                        lineNumber: 355,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1363,13 +1509,13 @@ function CapturePage({ onCapture, onInferenceComplete }) {
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/components/pages/capture-page.tsx",
-                                        lineNumber: 250,
+                                        lineNumber: 356,
                                         columnNumber: 15
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/components/pages/capture-page.tsx",
-                                lineNumber: 248,
+                                lineNumber: 354,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1380,7 +1526,7 @@ function CapturePage({ onCapture, onInferenceComplete }) {
                                         children: totalBunches
                                     }, void 0, false, {
                                         fileName: "[project]/components/pages/capture-page.tsx",
-                                        lineNumber: 255,
+                                        lineNumber: 361,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1388,19 +1534,19 @@ function CapturePage({ onCapture, onInferenceComplete }) {
                                         children: "Bunches Found"
                                     }, void 0, false, {
                                         fileName: "[project]/components/pages/capture-page.tsx",
-                                        lineNumber: 256,
+                                        lineNumber: 362,
                                         columnNumber: 15
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/components/pages/capture-page.tsx",
-                                lineNumber: 254,
+                                lineNumber: 360,
                                 columnNumber: 13
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/components/pages/capture-page.tsx",
-                        lineNumber: 244,
+                        lineNumber: 350,
                         columnNumber: 11
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1446,8 +1592,15 @@ function CapturePage({ onCapture, onInferenceComplete }) {
                                                     ctx.fillText(labelText, x + 6, y - 6);
                                                 }
                                             });
+                                            // After drawing all boxes, save the annotated image
+                                            const annotatedDataUrl = canvas.toDataURL('image/jpeg', 0.95);
+                                            setAnnotatedImageDataUrl(annotatedDataUrl);
+                                            console.log('[Canvas] Annotated image saved for history');
                                         } else {
                                             console.log('[Canvas] No bunches to draw');
+                                            // Save original image if no bunches
+                                            const originalDataUrl = canvas.toDataURL('image/jpeg', 0.95);
+                                            setAnnotatedImageDataUrl(originalDataUrl);
                                         }
                                     };
                                     img.src = capturedImage;
@@ -1456,12 +1609,12 @@ function CapturePage({ onCapture, onInferenceComplete }) {
                             className: "w-full h-full object-contain"
                         }, void 0, false, {
                             fileName: "[project]/components/pages/capture-page.tsx",
-                            lineNumber: 262,
+                            lineNumber: 368,
                             columnNumber: 13
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/components/pages/capture-page.tsx",
-                        lineNumber: 261,
+                        lineNumber: 367,
                         columnNumber: 11
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1472,7 +1625,7 @@ function CapturePage({ onCapture, onInferenceComplete }) {
                                 children: "Classification Summary"
                             }, void 0, false, {
                                 fileName: "[project]/components/pages/capture-page.tsx",
-                                lineNumber: 324,
+                                lineNumber: 438,
                                 columnNumber: 13
                             }, this),
                             dominantClass && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1483,7 +1636,7 @@ function CapturePage({ onCapture, onInferenceComplete }) {
                                         children: "Most Common"
                                     }, void 0, false, {
                                         fileName: "[project]/components/pages/capture-page.tsx",
-                                        lineNumber: 331,
+                                        lineNumber: 445,
                                         columnNumber: 17
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1491,13 +1644,13 @@ function CapturePage({ onCapture, onInferenceComplete }) {
                                         children: dominantClass
                                     }, void 0, false, {
                                         fileName: "[project]/components/pages/capture-page.tsx",
-                                        lineNumber: 332,
+                                        lineNumber: 446,
                                         columnNumber: 17
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/components/pages/capture-page.tsx",
-                                lineNumber: 330,
+                                lineNumber: 444,
                                 columnNumber: 15
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1515,7 +1668,7 @@ function CapturePage({ onCapture, onInferenceComplete }) {
                                                         }
                                                     }, void 0, false, {
                                                         fileName: "[project]/components/pages/capture-page.tsx",
-                                                        lineNumber: 341,
+                                                        lineNumber: 455,
                                                         columnNumber: 21
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -1523,13 +1676,13 @@ function CapturePage({ onCapture, onInferenceComplete }) {
                                                         children: className
                                                     }, void 0, false, {
                                                         fileName: "[project]/components/pages/capture-page.tsx",
-                                                        lineNumber: 345,
+                                                        lineNumber: 459,
                                                         columnNumber: 21
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/components/pages/capture-page.tsx",
-                                                lineNumber: 340,
+                                                lineNumber: 454,
                                                 columnNumber: 19
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -1537,18 +1690,18 @@ function CapturePage({ onCapture, onInferenceComplete }) {
                                                 children: count
                                             }, void 0, false, {
                                                 fileName: "[project]/components/pages/capture-page.tsx",
-                                                lineNumber: 347,
+                                                lineNumber: 461,
                                                 columnNumber: 19
                                             }, this)
                                         ]
                                     }, className, true, {
                                         fileName: "[project]/components/pages/capture-page.tsx",
-                                        lineNumber: 339,
+                                        lineNumber: 453,
                                         columnNumber: 17
                                     }, this))
                             }, void 0, false, {
                                 fileName: "[project]/components/pages/capture-page.tsx",
-                                lineNumber: 337,
+                                lineNumber: 451,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1559,7 +1712,7 @@ function CapturePage({ onCapture, onInferenceComplete }) {
                                         children: "Total Bunches"
                                     }, void 0, false, {
                                         fileName: "[project]/components/pages/capture-page.tsx",
-                                        lineNumber: 354,
+                                        lineNumber: 468,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -1567,19 +1720,19 @@ function CapturePage({ onCapture, onInferenceComplete }) {
                                         children: totalBunches
                                     }, void 0, false, {
                                         fileName: "[project]/components/pages/capture-page.tsx",
-                                        lineNumber: 355,
+                                        lineNumber: 469,
                                         columnNumber: 15
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/components/pages/capture-page.tsx",
-                                lineNumber: 353,
+                                lineNumber: 467,
                                 columnNumber: 13
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/components/pages/capture-page.tsx",
-                        lineNumber: 323,
+                        lineNumber: 437,
                         columnNumber: 11
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("details", {
@@ -1590,7 +1743,7 @@ function CapturePage({ onCapture, onInferenceComplete }) {
                                 children: "Raw Output"
                             }, void 0, false, {
                                 fileName: "[project]/components/pages/capture-page.tsx",
-                                lineNumber: 361,
+                                lineNumber: 475,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("pre", {
@@ -1598,13 +1751,13 @@ function CapturePage({ onCapture, onInferenceComplete }) {
                                 children: JSON.stringify(inferenceResult, null, 2)
                             }, void 0, false, {
                                 fileName: "[project]/components/pages/capture-page.tsx",
-                                lineNumber: 364,
+                                lineNumber: 478,
                                 columnNumber: 13
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/components/pages/capture-page.tsx",
-                        lineNumber: 360,
+                        lineNumber: 474,
                         columnNumber: 11
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1616,7 +1769,7 @@ function CapturePage({ onCapture, onInferenceComplete }) {
                                 children: "New Capture"
                             }, void 0, false, {
                                 fileName: "[project]/components/pages/capture-page.tsx",
-                                lineNumber: 371,
+                                lineNumber: 485,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -1629,7 +1782,7 @@ function CapturePage({ onCapture, onInferenceComplete }) {
                                             className: "w-5 h-5"
                                         }, void 0, false, {
                                             fileName: "[project]/components/pages/capture-page.tsx",
-                                            lineNumber: 384,
+                                            lineNumber: 498,
                                             columnNumber: 19
                                         }, this),
                                         "Saved"
@@ -1637,24 +1790,24 @@ function CapturePage({ onCapture, onInferenceComplete }) {
                                 }, void 0, true) : 'Save Result'
                             }, void 0, false, {
                                 fileName: "[project]/components/pages/capture-page.tsx",
-                                lineNumber: 377,
+                                lineNumber: 491,
                                 columnNumber: 13
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/components/pages/capture-page.tsx",
-                        lineNumber: 370,
+                        lineNumber: 484,
                         columnNumber: 11
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/components/pages/capture-page.tsx",
-                lineNumber: 242,
+                lineNumber: 348,
                 columnNumber: 9
             }, this)
         }, void 0, false, {
             fileName: "[project]/components/pages/capture-page.tsx",
-            lineNumber: 241,
+            lineNumber: 347,
             columnNumber: 7
         }, this);
     }
@@ -1671,12 +1824,12 @@ function CapturePage({ onCapture, onInferenceComplete }) {
                             className: "w-8 h-8 text-destructive"
                         }, void 0, false, {
                             fileName: "[project]/components/pages/capture-page.tsx",
-                            lineNumber: 403,
+                            lineNumber: 517,
                             columnNumber: 13
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/components/pages/capture-page.tsx",
-                        lineNumber: 402,
+                        lineNumber: 516,
                         columnNumber: 11
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1686,7 +1839,7 @@ function CapturePage({ onCapture, onInferenceComplete }) {
                                 children: "Processing Failed"
                             }, void 0, false, {
                                 fileName: "[project]/components/pages/capture-page.tsx",
-                                lineNumber: 407,
+                                lineNumber: 521,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1694,13 +1847,13 @@ function CapturePage({ onCapture, onInferenceComplete }) {
                                 children: error
                             }, void 0, false, {
                                 fileName: "[project]/components/pages/capture-page.tsx",
-                                lineNumber: 408,
+                                lineNumber: 522,
                                 columnNumber: 13
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/components/pages/capture-page.tsx",
-                        lineNumber: 406,
+                        lineNumber: 520,
                         columnNumber: 11
                     }, this),
                     capturedImage && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1711,12 +1864,12 @@ function CapturePage({ onCapture, onInferenceComplete }) {
                             className: "w-full h-full object-cover"
                         }, void 0, false, {
                             fileName: "[project]/components/pages/capture-page.tsx",
-                            lineNumber: 413,
+                            lineNumber: 527,
                             columnNumber: 15
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/components/pages/capture-page.tsx",
-                        lineNumber: 412,
+                        lineNumber: 526,
                         columnNumber: 13
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1728,7 +1881,7 @@ function CapturePage({ onCapture, onInferenceComplete }) {
                                 children: "Cancel"
                             }, void 0, false, {
                                 fileName: "[project]/components/pages/capture-page.tsx",
-                                lineNumber: 422,
+                                lineNumber: 536,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -1737,261 +1890,463 @@ function CapturePage({ onCapture, onInferenceComplete }) {
                                 children: "Retry"
                             }, void 0, false, {
                                 fileName: "[project]/components/pages/capture-page.tsx",
-                                lineNumber: 428,
+                                lineNumber: 542,
                                 columnNumber: 13
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/components/pages/capture-page.tsx",
-                        lineNumber: 421,
+                        lineNumber: 535,
                         columnNumber: 11
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/components/pages/capture-page.tsx",
-                lineNumber: 401,
+                lineNumber: 515,
                 columnNumber: 9
             }, this)
         }, void 0, false, {
             fileName: "[project]/components/pages/capture-page.tsx",
-            lineNumber: 400,
+            lineNumber: 514,
             columnNumber: 7
         }, this);
     }
     // Ready View (Default)
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-        className: "flex-1 flex flex-col p-4 pb-24",
+        className: "flex-1 flex flex-col bg-gradient-to-b from-background to-muted/20",
         children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-            className: "flex-1 flex flex-col gap-4",
+            className: "flex-1 flex flex-col px-6 py-8 pb-28",
             children: [
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                    className: "pt-2",
+                    className: "mb-8",
                     children: [
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h1", {
-                            className: "text-xl font-bold",
+                            className: "text-2xl font-bold tracking-tight mb-1.5",
                             children: "Capture Bunch"
                         }, void 0, false, {
                             fileName: "[project]/components/pages/capture-page.tsx",
-                            lineNumber: 446,
+                            lineNumber: 560,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                             className: "text-sm text-muted-foreground",
-                            children: "Take a photo of the palm oil bunch"
+                            children: "AI-powered palm oil bunch grading"
                         }, void 0, false, {
                             fileName: "[project]/components/pages/capture-page.tsx",
-                            lineNumber: 447,
+                            lineNumber: 561,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/components/pages/capture-page.tsx",
-                    lineNumber: 445,
+                    lineNumber: 559,
                     columnNumber: 9
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                    className: "flex-1 flex flex-col justify-center gap-6 px-4",
-                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                        className: "text-center space-y-4",
-                        children: [
-                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                className: "mx-auto w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center",
-                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("svg", {
-                                    xmlns: "http://www.w3.org/2000/svg",
-                                    viewBox: "0 0 24 24",
-                                    fill: "none",
-                                    stroke: "currentColor",
-                                    strokeWidth: "2",
-                                    strokeLinecap: "round",
-                                    strokeLinejoin: "round",
-                                    className: "w-10 h-10 text-primary",
+                    className: "flex-1 flex flex-col justify-center space-y-6",
+                    children: [
+                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                            className: "flex flex-col items-center mb-2",
+                            children: [
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                    className: "relative mb-6",
                                     children: [
-                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("path", {
-                                            d: "M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                            className: "absolute inset-0 bg-primary/20 rounded-full blur-2xl scale-110 animate-pulse"
                                         }, void 0, false, {
                                             fileName: "[project]/components/pages/capture-page.tsx",
-                                            lineNumber: 464,
-                                            columnNumber: 17
+                                            lineNumber: 572,
+                                            columnNumber: 15
                                         }, this),
-                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("circle", {
-                                            cx: "12",
-                                            cy: "13",
-                                            r: "3"
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                            className: "relative w-24 h-24 bg-gradient-to-br from-primary to-primary/70 rounded-3xl shadow-lg shadow-primary/25 flex items-center justify-center transform transition-transform hover:scale-105",
+                                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("svg", {
+                                                xmlns: "http://www.w3.org/2000/svg",
+                                                viewBox: "0 0 24 24",
+                                                fill: "none",
+                                                stroke: "currentColor",
+                                                strokeWidth: "2",
+                                                strokeLinecap: "round",
+                                                strokeLinejoin: "round",
+                                                className: "w-12 h-12 text-primary-foreground",
+                                                children: [
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("path", {
+                                                        d: "M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/components/pages/capture-page.tsx",
+                                                        lineNumber: 585,
+                                                        columnNumber: 19
+                                                    }, this),
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("circle", {
+                                                        cx: "12",
+                                                        cy: "13",
+                                                        r: "3"
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/components/pages/capture-page.tsx",
+                                                        lineNumber: 586,
+                                                        columnNumber: 19
+                                                    }, this)
+                                                ]
+                                            }, void 0, true, {
+                                                fileName: "[project]/components/pages/capture-page.tsx",
+                                                lineNumber: 575,
+                                                columnNumber: 17
+                                            }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/components/pages/capture-page.tsx",
-                                            lineNumber: 465,
-                                            columnNumber: 17
+                                            lineNumber: 574,
+                                            columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/components/pages/capture-page.tsx",
-                                    lineNumber: 454,
-                                    columnNumber: 15
+                                    lineNumber: 570,
+                                    columnNumber: 13
+                                }, this),
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                    className: "text-center space-y-2 mb-6",
+                                    children: [
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
+                                            className: "text-xl font-bold text-foreground",
+                                            children: "Ready to Grade"
+                                        }, void 0, false, {
+                                            fileName: "[project]/components/pages/capture-page.tsx",
+                                            lineNumber: 592,
+                                            columnNumber: 15
+                                        }, this),
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                            className: "text-sm text-muted-foreground max-w-xs mx-auto leading-relaxed",
+                                            children: "Capture or upload an image to analyze palm oil bunch ripeness"
+                                        }, void 0, false, {
+                                            fileName: "[project]/components/pages/capture-page.tsx",
+                                            lineNumber: 593,
+                                            columnNumber: 15
+                                        }, this)
+                                    ]
+                                }, void 0, true, {
+                                    fileName: "[project]/components/pages/capture-page.tsx",
+                                    lineNumber: 591,
+                                    columnNumber: 13
                                 }, this)
-                            }, void 0, false, {
-                                fileName: "[project]/components/pages/capture-page.tsx",
-                                lineNumber: 453,
-                                columnNumber: 13
-                            }, this),
-                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                            ]
+                        }, void 0, true, {
+                            fileName: "[project]/components/pages/capture-page.tsx",
+                            lineNumber: 569,
+                            columnNumber: 11
+                        }, this),
+                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                            className: "bg-card border-2 border-primary/10 rounded-2xl p-5 shadow-lg shadow-black/5",
+                            children: [
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                    className: "flex items-center gap-2 mb-4",
+                                    children: [
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                            className: "w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center",
+                                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                className: "text-lg",
+                                                children: "💡"
+                                            }, void 0, false, {
+                                                fileName: "[project]/components/pages/capture-page.tsx",
+                                                lineNumber: 603,
+                                                columnNumber: 17
+                                            }, this)
+                                        }, void 0, false, {
+                                            fileName: "[project]/components/pages/capture-page.tsx",
+                                            lineNumber: 602,
+                                            columnNumber: 15
+                                        }, this),
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
+                                            className: "text-sm font-semibold text-foreground",
+                                            children: "Tips for Best Results"
+                                        }, void 0, false, {
+                                            fileName: "[project]/components/pages/capture-page.tsx",
+                                            lineNumber: 605,
+                                            columnNumber: 15
+                                        }, this)
+                                    ]
+                                }, void 0, true, {
+                                    fileName: "[project]/components/pages/capture-page.tsx",
+                                    lineNumber: 601,
+                                    columnNumber: 13
+                                }, this),
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                    className: "space-y-3",
+                                    children: [
+                                        {
+                                            icon: '☀️',
+                                            text: 'Use natural or bright lighting'
+                                        },
+                                        {
+                                            icon: '🎯',
+                                            text: 'Center the bunch in frame'
+                                        },
+                                        {
+                                            icon: '📐',
+                                            text: 'Maintain steady camera position'
+                                        },
+                                        {
+                                            icon: '🚫',
+                                            text: 'Minimize shadows and reflections'
+                                        }
+                                    ].map((tip, index)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                            className: "flex items-start gap-3 group",
+                                            children: [
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                    className: "w-6 h-6 bg-primary/5 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5 group-hover:bg-primary/10 transition-colors",
+                                                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                        className: "text-sm",
+                                                        children: tip.icon
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/components/pages/capture-page.tsx",
+                                                        lineNumber: 619,
+                                                        columnNumber: 21
+                                                    }, this)
+                                                }, void 0, false, {
+                                                    fileName: "[project]/components/pages/capture-page.tsx",
+                                                    lineNumber: 618,
+                                                    columnNumber: 19
+                                                }, this),
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                                    className: "text-sm text-muted-foreground leading-relaxed group-hover:text-foreground transition-colors",
+                                                    children: tip.text
+                                                }, void 0, false, {
+                                                    fileName: "[project]/components/pages/capture-page.tsx",
+                                                    lineNumber: 621,
+                                                    columnNumber: 19
+                                                }, this)
+                                            ]
+                                        }, index, true, {
+                                            fileName: "[project]/components/pages/capture-page.tsx",
+                                            lineNumber: 617,
+                                            columnNumber: 17
+                                        }, this))
+                                }, void 0, false, {
+                                    fileName: "[project]/components/pages/capture-page.tsx",
+                                    lineNumber: 610,
+                                    columnNumber: 13
+                                }, this)
+                            ]
+                        }, void 0, true, {
+                            fileName: "[project]/components/pages/capture-page.tsx",
+                            lineNumber: 600,
+                            columnNumber: 11
+                        }, this)
+                    ]
+                }, void 0, true, {
+                    fileName: "[project]/components/pages/capture-page.tsx",
+                    lineNumber: 567,
+                    columnNumber: 9
+                }, this),
+                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                    className: "space-y-3 mt-8",
+                    children: [
+                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                            className: "w-full h-14 bg-primary text-primary-foreground hover:bg-primary/90 active:scale-[0.98] rounded-xl font-semibold text-base transition-all duration-200 flex items-center justify-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-primary/25 disabled:shadow-none",
+                            onClick: ()=>setViewState('camera'),
+                            disabled: !isModelWarmedUp,
+                            children: isModelWarmedUp ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Fragment"], {
                                 children: [
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
-                                        className: "text-lg font-semibold mb-2",
-                                        children: "Ready to Grade"
-                                    }, void 0, false, {
-                                        fileName: "[project]/components/pages/capture-page.tsx",
-                                        lineNumber: 470,
-                                        columnNumber: 15
-                                    }, this),
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                        className: "text-sm text-muted-foreground",
-                                        children: "Position the palm oil bunch in good lighting for best results"
-                                    }, void 0, false, {
-                                        fileName: "[project]/components/pages/capture-page.tsx",
-                                        lineNumber: 471,
-                                        columnNumber: 15
-                                    }, this)
-                                ]
-                            }, void 0, true, {
-                                fileName: "[project]/components/pages/capture-page.tsx",
-                                lineNumber: 469,
-                                columnNumber: 13
-                            }, this),
-                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                className: "bg-accent/10 border border-accent/20 rounded-lg p-4 text-left",
-                                children: [
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                        className: "text-xs font-medium text-accent-foreground mb-2",
-                                        children: "📸 Tips for best results:"
-                                    }, void 0, false, {
-                                        fileName: "[project]/components/pages/capture-page.tsx",
-                                        lineNumber: 477,
-                                        columnNumber: 15
-                                    }, this),
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("ul", {
-                                        className: "text-xs text-accent-foreground/80 space-y-1.5",
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("svg", {
+                                        xmlns: "http://www.w3.org/2000/svg",
+                                        viewBox: "0 0 24 24",
+                                        fill: "none",
+                                        stroke: "currentColor",
+                                        strokeWidth: "2.5",
+                                        strokeLinecap: "round",
+                                        strokeLinejoin: "round",
+                                        className: "w-5 h-5",
                                         children: [
-                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("li", {
-                                                children: "• Ensure good lighting conditions"
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("path", {
+                                                d: "M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"
                                             }, void 0, false, {
                                                 fileName: "[project]/components/pages/capture-page.tsx",
-                                                lineNumber: 481,
-                                                columnNumber: 17
+                                                lineNumber: 649,
+                                                columnNumber: 19
                                             }, this),
-                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("li", {
-                                                children: "• Capture the entire bunch in frame"
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("circle", {
+                                                cx: "12",
+                                                cy: "13",
+                                                r: "3"
                                             }, void 0, false, {
                                                 fileName: "[project]/components/pages/capture-page.tsx",
-                                                lineNumber: 482,
-                                                columnNumber: 17
-                                            }, this),
-                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("li", {
-                                                children: "• Keep the camera steady"
-                                            }, void 0, false, {
-                                                fileName: "[project]/components/pages/capture-page.tsx",
-                                                lineNumber: 483,
-                                                columnNumber: 17
-                                            }, this),
-                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("li", {
-                                                children: "• Avoid shadows on the bunch"
-                                            }, void 0, false, {
-                                                fileName: "[project]/components/pages/capture-page.tsx",
-                                                lineNumber: 484,
-                                                columnNumber: 17
+                                                lineNumber: 650,
+                                                columnNumber: 19
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/components/pages/capture-page.tsx",
-                                        lineNumber: 480,
+                                        lineNumber: 639,
+                                        columnNumber: 17
+                                    }, this),
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                        children: "Open Camera"
+                                    }, void 0, false, {
+                                        fileName: "[project]/components/pages/capture-page.tsx",
+                                        lineNumber: 652,
+                                        columnNumber: 17
+                                    }, this)
+                                ]
+                            }, void 0, true) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Fragment"], {
+                                children: [
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$loader$2d$circle$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Loader2$3e$__["Loader2"], {
+                                        className: "w-5 h-5 animate-spin"
+                                    }, void 0, false, {
+                                        fileName: "[project]/components/pages/capture-page.tsx",
+                                        lineNumber: 656,
+                                        columnNumber: 17
+                                    }, this),
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                        children: "Initializing..."
+                                    }, void 0, false, {
+                                        fileName: "[project]/components/pages/capture-page.tsx",
+                                        lineNumber: 657,
+                                        columnNumber: 17
+                                    }, this)
+                                ]
+                            }, void 0, true)
+                        }, void 0, false, {
+                            fileName: "[project]/components/pages/capture-page.tsx",
+                            lineNumber: 632,
+                            columnNumber: 11
+                        }, this),
+                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("label", {
+                            className: `w-full h-14 bg-card border-2 border-border hover:border-primary/50 hover:bg-accent/50 active:scale-[0.98] rounded-xl font-semibold text-base transition-all duration-200 flex items-center justify-center gap-3 cursor-pointer shadow-md ${!isModelWarmedUp ? 'opacity-50 cursor-not-allowed' : ''}`,
+                            children: [
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
+                                    type: "file",
+                                    accept: "image/*",
+                                    className: "hidden",
+                                    onChange: handleImageUpload,
+                                    disabled: !isModelWarmedUp
+                                }, void 0, false, {
+                                    fileName: "[project]/components/pages/capture-page.tsx",
+                                    lineNumber: 668,
+                                    columnNumber: 13
+                                }, this),
+                                isModelWarmedUp ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Fragment"], {
+                                    children: [
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("svg", {
+                                            xmlns: "http://www.w3.org/2000/svg",
+                                            viewBox: "0 0 24 24",
+                                            fill: "none",
+                                            stroke: "currentColor",
+                                            strokeWidth: "2.5",
+                                            strokeLinecap: "round",
+                                            strokeLinejoin: "round",
+                                            className: "w-5 h-5",
+                                            children: [
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("path", {
+                                                    d: "M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"
+                                                }, void 0, false, {
+                                                    fileName: "[project]/components/pages/capture-page.tsx",
+                                                    lineNumber: 687,
+                                                    columnNumber: 19
+                                                }, this),
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("polyline", {
+                                                    points: "17 8 12 3 7 8"
+                                                }, void 0, false, {
+                                                    fileName: "[project]/components/pages/capture-page.tsx",
+                                                    lineNumber: 688,
+                                                    columnNumber: 19
+                                                }, this),
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("line", {
+                                                    x1: "12",
+                                                    y1: "3",
+                                                    x2: "12",
+                                                    y2: "15"
+                                                }, void 0, false, {
+                                                    fileName: "[project]/components/pages/capture-page.tsx",
+                                                    lineNumber: 689,
+                                                    columnNumber: 19
+                                                }, this)
+                                            ]
+                                        }, void 0, true, {
+                                            fileName: "[project]/components/pages/capture-page.tsx",
+                                            lineNumber: 677,
+                                            columnNumber: 17
+                                        }, this),
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                            children: "Upload Image"
+                                        }, void 0, false, {
+                                            fileName: "[project]/components/pages/capture-page.tsx",
+                                            lineNumber: 691,
+                                            columnNumber: 17
+                                        }, this)
+                                    ]
+                                }, void 0, true) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Fragment"], {
+                                    children: [
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$loader$2d$circle$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Loader2$3e$__["Loader2"], {
+                                            className: "w-5 h-5 animate-spin"
+                                        }, void 0, false, {
+                                            fileName: "[project]/components/pages/capture-page.tsx",
+                                            lineNumber: 695,
+                                            columnNumber: 17
+                                        }, this),
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                            children: "Initializing..."
+                                        }, void 0, false, {
+                                            fileName: "[project]/components/pages/capture-page.tsx",
+                                            lineNumber: 696,
+                                            columnNumber: 17
+                                        }, this)
+                                    ]
+                                }, void 0, true)
+                            ]
+                        }, void 0, true, {
+                            fileName: "[project]/components/pages/capture-page.tsx",
+                            lineNumber: 663,
+                            columnNumber: 11
+                        }, this),
+                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                            className: "flex items-center justify-center gap-2 pt-2",
+                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                className: "flex items-center gap-1.5 px-3 py-1.5 bg-muted/50 rounded-full",
+                                children: [
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                        className: "w-2 h-2 bg-primary rounded-full animate-pulse"
+                                    }, void 0, false, {
+                                        fileName: "[project]/components/pages/capture-page.tsx",
+                                        lineNumber: 704,
+                                        columnNumber: 15
+                                    }, this),
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                        className: "text-xs font-medium text-muted-foreground",
+                                        children: "AI Ready • Square 720×720 capture"
+                                    }, void 0, false, {
+                                        fileName: "[project]/components/pages/capture-page.tsx",
+                                        lineNumber: 705,
                                         columnNumber: 15
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/components/pages/capture-page.tsx",
-                                lineNumber: 476,
+                                lineNumber: 703,
                                 columnNumber: 13
                             }, this)
-                        ]
-                    }, void 0, true, {
-                        fileName: "[project]/components/pages/capture-page.tsx",
-                        lineNumber: 452,
-                        columnNumber: 11
-                    }, this)
-                }, void 0, false, {
+                        }, void 0, false, {
+                            fileName: "[project]/components/pages/capture-page.tsx",
+                            lineNumber: 702,
+                            columnNumber: 11
+                        }, this)
+                    ]
+                }, void 0, true, {
                     fileName: "[project]/components/pages/capture-page.tsx",
-                    lineNumber: 451,
-                    columnNumber: 9
-                }, this),
-                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-                    className: "w-full h-14 bg-primary text-primary-foreground hover:bg-primary/90 rounded-md font-semibold text-base transition-colors flex items-center justify-center gap-2 disabled:opacity-50",
-                    onClick: ()=>setViewState('camera'),
-                    disabled: !isModelWarmedUp,
-                    children: isModelWarmedUp ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Fragment"], {
-                        children: [
-                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("svg", {
-                                xmlns: "http://www.w3.org/2000/svg",
-                                viewBox: "0 0 24 24",
-                                fill: "none",
-                                stroke: "currentColor",
-                                strokeWidth: "2",
-                                strokeLinecap: "round",
-                                strokeLinejoin: "round",
-                                className: "w-5 h-5",
-                                children: [
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("path", {
-                                        d: "M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"
-                                    }, void 0, false, {
-                                        fileName: "[project]/components/pages/capture-page.tsx",
-                                        lineNumber: 508,
-                                        columnNumber: 17
-                                    }, this),
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("circle", {
-                                        cx: "12",
-                                        cy: "13",
-                                        r: "3"
-                                    }, void 0, false, {
-                                        fileName: "[project]/components/pages/capture-page.tsx",
-                                        lineNumber: 509,
-                                        columnNumber: 17
-                                    }, this)
-                                ]
-                            }, void 0, true, {
-                                fileName: "[project]/components/pages/capture-page.tsx",
-                                lineNumber: 498,
-                                columnNumber: 15
-                            }, this),
-                            "Open Camera"
-                        ]
-                    }, void 0, true) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Fragment"], {
-                        children: [
-                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$loader$2d$circle$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Loader2$3e$__["Loader2"], {
-                                className: "w-5 h-5 animate-spin"
-                            }, void 0, false, {
-                                fileName: "[project]/components/pages/capture-page.tsx",
-                                lineNumber: 515,
-                                columnNumber: 15
-                            }, this),
-                            "Loading AI Model..."
-                        ]
-                    }, void 0, true)
-                }, void 0, false, {
-                    fileName: "[project]/components/pages/capture-page.tsx",
-                    lineNumber: 491,
+                    lineNumber: 631,
                     columnNumber: 9
                 }, this)
             ]
         }, void 0, true, {
             fileName: "[project]/components/pages/capture-page.tsx",
-            lineNumber: 443,
+            lineNumber: 557,
             columnNumber: 7
         }, this)
     }, void 0, false, {
         fileName: "[project]/components/pages/capture-page.tsx",
-        lineNumber: 442,
+        lineNumber: 556,
         columnNumber: 5
     }, this);
 }
-_s(CapturePage, "odMFNZJD2KXxhHdTgh9YAT1LD/s=");
+_s(CapturePage, "LyRR8sC9tNfuKkujsMQeaqwTWlQ=");
 _c = CapturePage;
 var _c;
 __turbopack_context__.k.register(_c, "CapturePage");
@@ -2089,6 +2444,8 @@ function HistoryPage({ onSelectItem }) {
                 "HistoryPage.useEffect.historyItems": (record)=>{
                     const grade = GRADE_LABELS[record.topClass] || `Class ${record.topClass}`;
                     const confidencePercent = (record.confidence * 100).toFixed(1);
+                    // Extract additional data from record if available
+                    const recordData = record;
                     return {
                         id: record.id,
                         grade: grade,
@@ -2096,7 +2453,10 @@ function HistoryPage({ onSelectItem }) {
                         status: 'unsynced',
                         timestamp: formatTimestamp(record.timestamp),
                         image: record.imageUrl,
-                        confidence: record.confidence
+                        confidence: record.confidence,
+                        totalBunches: recordData.totalBunches,
+                        classificationSummary: recordData.classificationSummary,
+                        inferenceTime: recordData.inferenceTime
                     };
                 }
             }["HistoryPage.useEffect.historyItems"]);
@@ -2115,7 +2475,7 @@ function HistoryPage({ onSelectItem }) {
                         children: "Local History"
                     }, void 0, false, {
                         fileName: "[project]/components/pages/history-page.tsx",
-                        lineNumber: 56,
+                        lineNumber: 65,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -2126,13 +2486,13 @@ function HistoryPage({ onSelectItem }) {
                         ]
                     }, void 0, true, {
                         fileName: "[project]/components/pages/history-page.tsx",
-                        lineNumber: 57,
+                        lineNumber: 66,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/components/pages/history-page.tsx",
-                lineNumber: 55,
+                lineNumber: 64,
                 columnNumber: 7
             }, this),
             items.length === 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2152,17 +2512,17 @@ function HistoryPage({ onSelectItem }) {
                                 d: "M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
                             }, void 0, false, {
                                 fileName: "[project]/components/pages/history-page.tsx",
-                                lineNumber: 70,
+                                lineNumber: 79,
                                 columnNumber: 15
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/components/pages/history-page.tsx",
-                            lineNumber: 64,
+                            lineNumber: 73,
                             columnNumber: 13
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/components/pages/history-page.tsx",
-                        lineNumber: 63,
+                        lineNumber: 72,
                         columnNumber: 11
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
@@ -2170,7 +2530,7 @@ function HistoryPage({ onSelectItem }) {
                         children: "No History Yet"
                     }, void 0, false, {
                         fileName: "[project]/components/pages/history-page.tsx",
-                        lineNumber: 78,
+                        lineNumber: 87,
                         columnNumber: 11
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -2178,13 +2538,13 @@ function HistoryPage({ onSelectItem }) {
                         children: "Capture and save your first grading result to see it here"
                     }, void 0, false, {
                         fileName: "[project]/components/pages/history-page.tsx",
-                        lineNumber: 79,
+                        lineNumber: 88,
                         columnNumber: 11
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/components/pages/history-page.tsx",
-                lineNumber: 62,
+                lineNumber: 71,
                 columnNumber: 9
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2201,7 +2561,7 @@ function HistoryPage({ onSelectItem }) {
                                     className: "w-16 h-16 rounded-lg object-cover flex-shrink-0"
                                 }, void 0, false, {
                                     fileName: "[project]/components/pages/history-page.tsx",
-                                    lineNumber: 95,
+                                    lineNumber: 104,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2218,73 +2578,99 @@ function HistoryPage({ onSelectItem }) {
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/components/pages/history-page.tsx",
-                                                    lineNumber: 104,
+                                                    lineNumber: 113,
                                                     columnNumber: 19
                                                 }, this),
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$badge$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Badge"], {
-                                                    variant: item.status === 'synced' ? 'default' : 'secondary',
+                                                item.totalBunches !== undefined && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$badge$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Badge"], {
+                                                    variant: "outline",
                                                     className: "text-xs",
-                                                    children: item.status === 'synced' ? 'Synced' : 'Unsynced'
-                                                }, void 0, false, {
+                                                    children: [
+                                                        item.totalBunches,
+                                                        " bunch",
+                                                        item.totalBunches !== 1 ? 'es' : ''
+                                                    ]
+                                                }, void 0, true, {
                                                     fileName: "[project]/components/pages/history-page.tsx",
-                                                    lineNumber: 105,
-                                                    columnNumber: 19
+                                                    lineNumber: 115,
+                                                    columnNumber: 21
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/components/pages/history-page.tsx",
-                                            lineNumber: 103,
+                                            lineNumber: 112,
                                             columnNumber: 17
                                         }, this),
-                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                            className: "text-sm font-semibold",
+                                        item.classificationSummary ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                            className: "flex gap-1.5 mb-1",
+                                            children: Object.entries(item.classificationSummary).map(([className, count])=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                    className: "text-xs px-1.5 py-0.5 rounded",
+                                                    style: {
+                                                        backgroundColor: className.includes('unripe') ? '#00FF0020' : className.includes('over') ? '#FF000020' : '#FFA50020',
+                                                        color: className.includes('unripe') ? '#00AA00' : className.includes('over') ? '#CC0000' : '#CC8400'
+                                                    },
+                                                    children: [
+                                                        className,
+                                                        ": ",
+                                                        count
+                                                    ]
+                                                }, className, true, {
+                                                    fileName: "[project]/components/pages/history-page.tsx",
+                                                    lineNumber: 123,
+                                                    columnNumber: 23
+                                                }, this))
+                                        }, void 0, false, {
+                                            fileName: "[project]/components/pages/history-page.tsx",
+                                            lineNumber: 121,
+                                            columnNumber: 19
+                                        }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                            className: "text-sm font-semibold mb-1",
                                             children: item.quantity
                                         }, void 0, false, {
                                             fileName: "[project]/components/pages/history-page.tsx",
-                                            lineNumber: 112,
-                                            columnNumber: 17
+                                            lineNumber: 134,
+                                            columnNumber: 19
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                                             className: "text-xs text-muted-foreground",
                                             children: item.timestamp
                                         }, void 0, false, {
                                             fileName: "[project]/components/pages/history-page.tsx",
-                                            lineNumber: 113,
+                                            lineNumber: 136,
                                             columnNumber: 17
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/components/pages/history-page.tsx",
-                                    lineNumber: 102,
+                                    lineNumber: 111,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$chevron$2d$right$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__ChevronRight$3e$__["ChevronRight"], {
                                     className: "w-5 h-5 text-muted-foreground flex-shrink-0"
                                 }, void 0, false, {
                                     fileName: "[project]/components/pages/history-page.tsx",
-                                    lineNumber: 117,
+                                    lineNumber: 140,
                                     columnNumber: 15
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/components/pages/history-page.tsx",
-                            lineNumber: 93,
+                            lineNumber: 102,
                             columnNumber: 13
                         }, this)
                     }, item.id, false, {
                         fileName: "[project]/components/pages/history-page.tsx",
-                        lineNumber: 88,
+                        lineNumber: 97,
                         columnNumber: 11
                     }, this))
             }, void 0, false, {
                 fileName: "[project]/components/pages/history-page.tsx",
-                lineNumber: 86,
+                lineNumber: 95,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/components/pages/history-page.tsx",
-        lineNumber: 53,
+        lineNumber: 62,
         columnNumber: 5
     }, this);
 }
@@ -2342,12 +2728,12 @@ function HistoryDetailPage({ item, onBack }) {
                 children: "No item selected"
             }, void 0, false, {
                 fileName: "[project]/components/pages/history-detail-page.tsx",
-                lineNumber: 29,
+                lineNumber: 33,
                 columnNumber: 9
             }, this)
         }, void 0, false, {
             fileName: "[project]/components/pages/history-detail-page.tsx",
-            lineNumber: 28,
+            lineNumber: 32,
             columnNumber: 7
         }, this);
     }
@@ -2364,12 +2750,12 @@ function HistoryDetailPage({ item, onBack }) {
                             className: "w-6 h-6"
                         }, void 0, false, {
                             fileName: "[project]/components/pages/history-detail-page.tsx",
-                            lineNumber: 42,
+                            lineNumber: 46,
                             columnNumber: 11
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/components/pages/history-detail-page.tsx",
-                        lineNumber: 38,
+                        lineNumber: 42,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2379,7 +2765,7 @@ function HistoryDetailPage({ item, onBack }) {
                                 children: "Record Details"
                             }, void 0, false, {
                                 fileName: "[project]/components/pages/history-detail-page.tsx",
-                                lineNumber: 45,
+                                lineNumber: 49,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -2387,19 +2773,19 @@ function HistoryDetailPage({ item, onBack }) {
                                 children: "View full measurement"
                             }, void 0, false, {
                                 fileName: "[project]/components/pages/history-detail-page.tsx",
-                                lineNumber: 46,
+                                lineNumber: 50,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/components/pages/history-detail-page.tsx",
-                        lineNumber: 44,
+                        lineNumber: 48,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/components/pages/history-detail-page.tsx",
-                lineNumber: 37,
+                lineNumber: 41,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Card"], {
@@ -2411,17 +2797,17 @@ function HistoryDetailPage({ item, onBack }) {
                         className: "w-full rounded-lg object-cover h-64"
                     }, void 0, false, {
                         fileName: "[project]/components/pages/history-detail-page.tsx",
-                        lineNumber: 53,
+                        lineNumber: 57,
                         columnNumber: 11
                     }, this)
                 }, void 0, false, {
                     fileName: "[project]/components/pages/history-detail-page.tsx",
-                    lineNumber: 52,
+                    lineNumber: 56,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/components/pages/history-detail-page.tsx",
-                lineNumber: 51,
+                lineNumber: 55,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Card"], {
@@ -2433,95 +2819,183 @@ function HistoryDetailPage({ item, onBack }) {
                             children: [
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
                                     className: "text-sm font-semibold",
-                                    children: "Measurement Data"
+                                    children: "Analysis Results"
                                 }, void 0, false, {
                                     fileName: "[project]/components/pages/history-detail-page.tsx",
-                                    lineNumber: 65,
+                                    lineNumber: 69,
                                     columnNumber: 13
                                 }, this),
-                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$badge$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Badge"], {
-                                    variant: item.status === 'synced' ? 'default' : 'secondary',
-                                    children: item.status === 'synced' ? 'Synced' : 'Unsynced'
-                                }, void 0, false, {
+                                item.inferenceTime && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$badge$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Badge"], {
+                                    variant: "outline",
+                                    className: "text-xs",
+                                    children: [
+                                        item.inferenceTime,
+                                        "ms"
+                                    ]
+                                }, void 0, true, {
                                     fileName: "[project]/components/pages/history-detail-page.tsx",
-                                    lineNumber: 66,
-                                    columnNumber: 13
+                                    lineNumber: 71,
+                                    columnNumber: 15
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/components/pages/history-detail-page.tsx",
-                            lineNumber: 64,
+                            lineNumber: 68,
                             columnNumber: 11
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/components/pages/history-detail-page.tsx",
-                        lineNumber: 63,
+                        lineNumber: 67,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["CardContent"], {
                         className: "space-y-4",
                         children: [
-                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                            item.totalBunches !== undefined && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                 children: [
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("label", {
                                         className: "text-xs text-muted-foreground font-medium",
-                                        children: "Grade"
-                                    }, void 0, false, {
-                                        fileName: "[project]/components/pages/history-detail-page.tsx",
-                                        lineNumber: 73,
-                                        columnNumber: 13
-                                    }, this),
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                        className: "mt-1 p-3 bg-muted rounded-lg",
-                                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                            className: "text-lg font-bold text-primary",
-                                            children: item.grade
-                                        }, void 0, false, {
-                                            fileName: "[project]/components/pages/history-detail-page.tsx",
-                                            lineNumber: 75,
-                                            columnNumber: 15
-                                        }, this)
-                                    }, void 0, false, {
-                                        fileName: "[project]/components/pages/history-detail-page.tsx",
-                                        lineNumber: 74,
-                                        columnNumber: 13
-                                    }, this)
-                                ]
-                            }, void 0, true, {
-                                fileName: "[project]/components/pages/history-detail-page.tsx",
-                                lineNumber: 72,
-                                columnNumber: 11
-                            }, this),
-                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                children: [
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("label", {
-                                        className: "text-xs text-muted-foreground font-medium",
-                                        children: "Quantity"
-                                    }, void 0, false, {
-                                        fileName: "[project]/components/pages/history-detail-page.tsx",
-                                        lineNumber: 80,
-                                        columnNumber: 13
-                                    }, this),
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                        className: "mt-1 p-3 bg-muted rounded-lg",
-                                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                            className: "text-base font-semibold",
-                                            children: item.quantity
-                                        }, void 0, false, {
-                                            fileName: "[project]/components/pages/history-detail-page.tsx",
-                                            lineNumber: 82,
-                                            columnNumber: 15
-                                        }, this)
+                                        children: "Total Bunches Detected"
                                     }, void 0, false, {
                                         fileName: "[project]/components/pages/history-detail-page.tsx",
                                         lineNumber: 81,
-                                        columnNumber: 13
+                                        columnNumber: 15
+                                    }, this),
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                        className: "mt-1 p-4 bg-gradient-to-br from-primary/5 to-primary/10 rounded-lg border-2 border-primary/20",
+                                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                            className: "text-3xl font-bold text-primary",
+                                            children: item.totalBunches
+                                        }, void 0, false, {
+                                            fileName: "[project]/components/pages/history-detail-page.tsx",
+                                            lineNumber: 83,
+                                            columnNumber: 17
+                                        }, this)
+                                    }, void 0, false, {
+                                        fileName: "[project]/components/pages/history-detail-page.tsx",
+                                        lineNumber: 82,
+                                        columnNumber: 15
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/components/pages/history-detail-page.tsx",
-                                lineNumber: 79,
-                                columnNumber: 11
+                                lineNumber: 80,
+                                columnNumber: 13
+                            }, this),
+                            item.classificationSummary && Object.keys(item.classificationSummary).length > 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                children: [
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("label", {
+                                        className: "text-xs text-muted-foreground font-medium mb-2 block",
+                                        children: "Classification Summary"
+                                    }, void 0, false, {
+                                        fileName: "[project]/components/pages/history-detail-page.tsx",
+                                        lineNumber: 91,
+                                        columnNumber: 15
+                                    }, this),
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                        className: "space-y-2",
+                                        children: Object.entries(item.classificationSummary).map(([className, count])=>{
+                                            const color = className.includes('unripe') ? {
+                                                bg: '#00FF00',
+                                                text: '#00AA00'
+                                            } : className.includes('over') ? {
+                                                bg: '#FF0000',
+                                                text: '#CC0000'
+                                            } : {
+                                                bg: '#FFA500',
+                                                text: '#CC8400'
+                                            };
+                                            const total = item.totalBunches || Object.values(item.classificationSummary).reduce((a, b)=>a + b, 0);
+                                            const percentage = total > 0 ? (count / total * 100).toFixed(0) : 0;
+                                            return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                className: "flex items-center gap-3 p-3 bg-muted rounded-lg",
+                                                children: [
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                        className: "w-3 h-3 rounded-full flex-shrink-0",
+                                                        style: {
+                                                            backgroundColor: color.bg
+                                                        }
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/components/pages/history-detail-page.tsx",
+                                                        lineNumber: 103,
+                                                        columnNumber: 23
+                                                    }, this),
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                        className: "flex-1",
+                                                        children: [
+                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                                                className: "text-sm font-medium capitalize",
+                                                                children: className
+                                                            }, void 0, false, {
+                                                                fileName: "[project]/components/pages/history-detail-page.tsx",
+                                                                lineNumber: 105,
+                                                                columnNumber: 25
+                                                            }, this),
+                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                                                className: "text-xs text-muted-foreground",
+                                                                children: [
+                                                                    percentage,
+                                                                    "% of total"
+                                                                ]
+                                                            }, void 0, true, {
+                                                                fileName: "[project]/components/pages/history-detail-page.tsx",
+                                                                lineNumber: 106,
+                                                                columnNumber: 25
+                                                            }, this)
+                                                        ]
+                                                    }, void 0, true, {
+                                                        fileName: "[project]/components/pages/history-detail-page.tsx",
+                                                        lineNumber: 104,
+                                                        columnNumber: 23
+                                                    }, this),
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                        className: "text-right",
+                                                        children: [
+                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                                                className: "text-xl font-bold",
+                                                                style: {
+                                                                    color: color.text
+                                                                },
+                                                                children: count
+                                                            }, void 0, false, {
+                                                                fileName: "[project]/components/pages/history-detail-page.tsx",
+                                                                lineNumber: 109,
+                                                                columnNumber: 25
+                                                            }, this),
+                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                                                className: "text-xs text-muted-foreground",
+                                                                children: [
+                                                                    "bunch",
+                                                                    count !== 1 ? 'es' : ''
+                                                                ]
+                                                            }, void 0, true, {
+                                                                fileName: "[project]/components/pages/history-detail-page.tsx",
+                                                                lineNumber: 110,
+                                                                columnNumber: 25
+                                                            }, this)
+                                                        ]
+                                                    }, void 0, true, {
+                                                        fileName: "[project]/components/pages/history-detail-page.tsx",
+                                                        lineNumber: 108,
+                                                        columnNumber: 23
+                                                    }, this)
+                                                ]
+                                            }, className, true, {
+                                                fileName: "[project]/components/pages/history-detail-page.tsx",
+                                                lineNumber: 102,
+                                                columnNumber: 21
+                                            }, this);
+                                        })
+                                    }, void 0, false, {
+                                        fileName: "[project]/components/pages/history-detail-page.tsx",
+                                        lineNumber: 92,
+                                        columnNumber: 15
+                                    }, this)
+                                ]
+                            }, void 0, true, {
+                                fileName: "[project]/components/pages/history-detail-page.tsx",
+                                lineNumber: 90,
+                                columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                 children: [
@@ -2530,40 +3004,40 @@ function HistoryDetailPage({ item, onBack }) {
                                         children: "Recorded"
                                     }, void 0, false, {
                                         fileName: "[project]/components/pages/history-detail-page.tsx",
-                                        lineNumber: 87,
+                                        lineNumber: 121,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                         className: "mt-1 p-3 bg-muted rounded-lg",
                                         children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                            className: "text-xs",
+                                            className: "text-sm",
                                             children: item.timestamp
                                         }, void 0, false, {
                                             fileName: "[project]/components/pages/history-detail-page.tsx",
-                                            lineNumber: 89,
+                                            lineNumber: 123,
                                             columnNumber: 15
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/components/pages/history-detail-page.tsx",
-                                        lineNumber: 88,
+                                        lineNumber: 122,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/components/pages/history-detail-page.tsx",
-                                lineNumber: 86,
+                                lineNumber: 120,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/components/pages/history-detail-page.tsx",
-                        lineNumber: 71,
+                        lineNumber: 77,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/components/pages/history-detail-page.tsx",
-                lineNumber: 62,
+                lineNumber: 66,
                 columnNumber: 7
             }, this),
             item.status === 'unsynced' && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -2573,13 +3047,13 @@ function HistoryDetailPage({ item, onBack }) {
                 children: "Retry Sync"
             }, void 0, false, {
                 fileName: "[project]/components/pages/history-detail-page.tsx",
-                lineNumber: 97,
+                lineNumber: 131,
                 columnNumber: 9
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/components/pages/history-detail-page.tsx",
-        lineNumber: 35,
+        lineNumber: 39,
         columnNumber: 5
     }, this);
 }
@@ -2600,19 +3074,73 @@ __turbopack_context__.s([
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/compiled/react/jsx-dev-runtime.js [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/components/ui/button.tsx [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/components/ui/card.tsx [app-client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$badge$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/components/ui/badge.tsx [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$user$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__User$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/user.js [app-client] (ecmascript) <export default as User>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$log$2d$out$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__LogOut$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/log-out.js [app-client] (ecmascript) <export default as LogOut>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$trash$2d$2$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Trash2$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/trash-2.js [app-client] (ecmascript) <export default as Trash2>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$circle$2d$check$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__CheckCircle2$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/circle-check.js [app-client] (ecmascript) <export default as CheckCircle2>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$clock$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Clock$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/clock.js [app-client] (ecmascript) <export default as Clock>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$calendar$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Calendar$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/calendar.js [app-client] (ecmascript) <export default as Calendar>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/compiled/react/index.js [app-client] (ecmascript)");
+;
+var _s = __turbopack_context__.k.signature();
 'use client';
 ;
 ;
 ;
 ;
+;
 function ProfilePage({ onLogout }) {
+    _s();
+    const [stats, setStats] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])({
+        todayChecks: 0,
+        weekChecks: 0,
+        totalBunches: 0
+    });
+    (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
+        "ProfilePage.useEffect": ()=>{
+            // Load statistics from history
+            const historyData = localStorage.getItem('history');
+            if (historyData) {
+                try {
+                    const history = JSON.parse(historyData);
+                    const now = new Date();
+                    const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+                    const weekStart = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+                    const todayChecks = history.filter({
+                        "ProfilePage.useEffect": (item)=>{
+                            const itemDate = new Date(item.timestamp);
+                            return itemDate >= todayStart;
+                        }
+                    }["ProfilePage.useEffect"]).length;
+                    const weekChecks = history.filter({
+                        "ProfilePage.useEffect": (item)=>{
+                            const itemDate = new Date(item.timestamp);
+                            return itemDate >= weekStart;
+                        }
+                    }["ProfilePage.useEffect"]).length;
+                    const totalBunches = history.reduce({
+                        "ProfilePage.useEffect.totalBunches": (sum, item)=>{
+                            return sum + (item.totalBunches || 0);
+                        }
+                    }["ProfilePage.useEffect.totalBunches"], 0);
+                    setStats({
+                        todayChecks,
+                        weekChecks,
+                        totalBunches
+                    });
+                } catch (error) {
+                    console.error('Failed to load stats:', error);
+                }
+            }
+        }
+    }["ProfilePage.useEffect"], []);
     const mockUser = {
-        name: 'John Operator',
-        phone: '+1 (555) 123-4567',
-        userId: 'OP-2024-0156',
+        name: 'Bunch Checker',
+        role: 'Quality Inspector',
+        userId: 'BC-2024-0156',
+        location: 'Mill Station A',
+        shiftStart: '08:00 AM',
         lastSync: '2 hours ago'
     };
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2626,24 +3154,25 @@ function ProfilePage({ onLogout }) {
                         children: "Profile"
                     }, void 0, false, {
                         fileName: "[project]/components/pages/profile-page.tsx",
-                        lineNumber: 23,
+                        lineNumber: 64,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                         className: "text-sm text-muted-foreground",
-                        children: "Operator information"
+                        children: "Bunch checker information"
                     }, void 0, false, {
                         fileName: "[project]/components/pages/profile-page.tsx",
-                        lineNumber: 24,
+                        lineNumber: 65,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/components/pages/profile-page.tsx",
-                lineNumber: 22,
+                lineNumber: 63,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Card"], {
+                className: "border-primary/20 shadow-lg",
                 children: [
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["CardHeader"], {
                         className: "pb-3",
@@ -2651,122 +3180,333 @@ function ProfilePage({ onLogout }) {
                             className: "flex items-center gap-3",
                             children: [
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                    className: "bg-primary text-primary-foreground p-3 rounded-lg",
+                                    className: "bg-gradient-to-br from-primary to-primary/70 text-primary-foreground p-3 rounded-xl shadow-md",
                                     children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$user$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__User$3e$__["User"], {
-                                        className: "w-6 h-6"
+                                        className: "w-7 h-7"
                                     }, void 0, false, {
                                         fileName: "[project]/components/pages/profile-page.tsx",
-                                        lineNumber: 32,
+                                        lineNumber: 73,
                                         columnNumber: 15
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/components/pages/profile-page.tsx",
-                                    lineNumber: 31,
+                                    lineNumber: 72,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                    className: "flex-1",
                                     children: [
-                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
-                                            className: "font-bold",
-                                            children: mockUser.name
-                                        }, void 0, false, {
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                            className: "flex items-center gap-2",
+                                            children: [
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
+                                                    className: "font-bold text-lg",
+                                                    children: mockUser.name
+                                                }, void 0, false, {
+                                                    fileName: "[project]/components/pages/profile-page.tsx",
+                                                    lineNumber: 77,
+                                                    columnNumber: 17
+                                                }, this),
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$badge$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Badge"], {
+                                                    variant: "secondary",
+                                                    className: "text-xs font-medium",
+                                                    children: "Active"
+                                                }, void 0, false, {
+                                                    fileName: "[project]/components/pages/profile-page.tsx",
+                                                    lineNumber: 78,
+                                                    columnNumber: 17
+                                                }, this)
+                                            ]
+                                        }, void 0, true, {
                                             fileName: "[project]/components/pages/profile-page.tsx",
-                                            lineNumber: 35,
+                                            lineNumber: 76,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                            className: "text-xs text-muted-foreground",
-                                            children: mockUser.phone
+                                            className: "text-sm text-muted-foreground",
+                                            children: mockUser.role
                                         }, void 0, false, {
                                             fileName: "[project]/components/pages/profile-page.tsx",
-                                            lineNumber: 36,
+                                            lineNumber: 82,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/components/pages/profile-page.tsx",
-                                    lineNumber: 34,
+                                    lineNumber: 75,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/components/pages/profile-page.tsx",
-                            lineNumber: 30,
+                            lineNumber: 71,
                             columnNumber: 11
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/components/pages/profile-page.tsx",
-                        lineNumber: 29,
+                        lineNumber: 70,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["CardContent"], {
                         className: "space-y-3 border-t border-border pt-3",
                         children: [
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                className: "grid grid-cols-2 gap-3",
                                 children: [
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("label", {
-                                        className: "text-xs text-muted-foreground font-medium",
-                                        children: "User ID"
-                                    }, void 0, false, {
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                        children: [
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("label", {
+                                                className: "text-xs text-muted-foreground font-medium",
+                                                children: "User ID"
+                                            }, void 0, false, {
+                                                fileName: "[project]/components/pages/profile-page.tsx",
+                                                lineNumber: 89,
+                                                columnNumber: 15
+                                            }, this),
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                                className: "text-sm font-mono font-semibold",
+                                                children: mockUser.userId
+                                            }, void 0, false, {
+                                                fileName: "[project]/components/pages/profile-page.tsx",
+                                                lineNumber: 90,
+                                                columnNumber: 15
+                                            }, this)
+                                        ]
+                                    }, void 0, true, {
                                         fileName: "[project]/components/pages/profile-page.tsx",
-                                        lineNumber: 42,
+                                        lineNumber: 88,
                                         columnNumber: 13
                                     }, this),
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                        className: "text-sm font-mono",
-                                        children: mockUser.userId
-                                    }, void 0, false, {
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                        children: [
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("label", {
+                                                className: "text-xs text-muted-foreground font-medium",
+                                                children: "Location"
+                                            }, void 0, false, {
+                                                fileName: "[project]/components/pages/profile-page.tsx",
+                                                lineNumber: 93,
+                                                columnNumber: 15
+                                            }, this),
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                                className: "text-sm font-medium",
+                                                children: mockUser.location
+                                            }, void 0, false, {
+                                                fileName: "[project]/components/pages/profile-page.tsx",
+                                                lineNumber: 94,
+                                                columnNumber: 15
+                                            }, this)
+                                        ]
+                                    }, void 0, true, {
                                         fileName: "[project]/components/pages/profile-page.tsx",
-                                        lineNumber: 43,
+                                        lineNumber: 92,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/components/pages/profile-page.tsx",
-                                lineNumber: 41,
+                                lineNumber: 87,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                className: "grid grid-cols-2 gap-3",
                                 children: [
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("label", {
-                                        className: "text-xs text-muted-foreground font-medium",
-                                        children: "Last Sync"
-                                    }, void 0, false, {
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                        children: [
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("label", {
+                                                className: "text-xs text-muted-foreground font-medium",
+                                                children: "Shift Start"
+                                            }, void 0, false, {
+                                                fileName: "[project]/components/pages/profile-page.tsx",
+                                                lineNumber: 99,
+                                                columnNumber: 15
+                                            }, this),
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                                className: "text-sm font-medium",
+                                                children: mockUser.shiftStart
+                                            }, void 0, false, {
+                                                fileName: "[project]/components/pages/profile-page.tsx",
+                                                lineNumber: 100,
+                                                columnNumber: 15
+                                            }, this)
+                                        ]
+                                    }, void 0, true, {
                                         fileName: "[project]/components/pages/profile-page.tsx",
-                                        lineNumber: 46,
+                                        lineNumber: 98,
                                         columnNumber: 13
                                     }, this),
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                        className: "text-sm",
-                                        children: mockUser.lastSync
-                                    }, void 0, false, {
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                        children: [
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("label", {
+                                                className: "text-xs text-muted-foreground font-medium",
+                                                children: "Last Sync"
+                                            }, void 0, false, {
+                                                fileName: "[project]/components/pages/profile-page.tsx",
+                                                lineNumber: 103,
+                                                columnNumber: 15
+                                            }, this),
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                                className: "text-sm font-medium",
+                                                children: mockUser.lastSync
+                                            }, void 0, false, {
+                                                fileName: "[project]/components/pages/profile-page.tsx",
+                                                lineNumber: 104,
+                                                columnNumber: 15
+                                            }, this)
+                                        ]
+                                    }, void 0, true, {
                                         fileName: "[project]/components/pages/profile-page.tsx",
-                                        lineNumber: 47,
+                                        lineNumber: 102,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/components/pages/profile-page.tsx",
-                                lineNumber: 45,
+                                lineNumber: 97,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/components/pages/profile-page.tsx",
-                        lineNumber: 40,
+                        lineNumber: 86,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/components/pages/profile-page.tsx",
-                lineNumber: 28,
+                lineNumber: 69,
+                columnNumber: 7
+            }, this),
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                className: "grid grid-cols-3 gap-3",
+                children: [
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Card"], {
+                        className: "border-green-500/20 bg-gradient-to-br from-green-50 to-green-100/50 dark:from-green-950/20 dark:to-green-900/10",
+                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["CardContent"], {
+                            className: "p-4 text-center",
+                            children: [
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$circle$2d$check$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__CheckCircle2$3e$__["CheckCircle2"], {
+                                    className: "w-6 h-6 mx-auto mb-2 text-green-600 dark:text-green-400"
+                                }, void 0, false, {
+                                    fileName: "[project]/components/pages/profile-page.tsx",
+                                    lineNumber: 114,
+                                    columnNumber: 13
+                                }, this),
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                    className: "text-2xl font-bold text-green-700 dark:text-green-300",
+                                    children: stats.todayChecks
+                                }, void 0, false, {
+                                    fileName: "[project]/components/pages/profile-page.tsx",
+                                    lineNumber: 115,
+                                    columnNumber: 13
+                                }, this),
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                    className: "text-xs text-green-600 dark:text-green-400 font-medium mt-1",
+                                    children: "Today"
+                                }, void 0, false, {
+                                    fileName: "[project]/components/pages/profile-page.tsx",
+                                    lineNumber: 116,
+                                    columnNumber: 13
+                                }, this)
+                            ]
+                        }, void 0, true, {
+                            fileName: "[project]/components/pages/profile-page.tsx",
+                            lineNumber: 113,
+                            columnNumber: 11
+                        }, this)
+                    }, void 0, false, {
+                        fileName: "[project]/components/pages/profile-page.tsx",
+                        lineNumber: 112,
+                        columnNumber: 9
+                    }, this),
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Card"], {
+                        className: "border-blue-500/20 bg-gradient-to-br from-blue-50 to-blue-100/50 dark:from-blue-950/20 dark:to-blue-900/10",
+                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["CardContent"], {
+                            className: "p-4 text-center",
+                            children: [
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$calendar$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Calendar$3e$__["Calendar"], {
+                                    className: "w-6 h-6 mx-auto mb-2 text-blue-600 dark:text-blue-400"
+                                }, void 0, false, {
+                                    fileName: "[project]/components/pages/profile-page.tsx",
+                                    lineNumber: 122,
+                                    columnNumber: 13
+                                }, this),
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                    className: "text-2xl font-bold text-blue-700 dark:text-blue-300",
+                                    children: stats.weekChecks
+                                }, void 0, false, {
+                                    fileName: "[project]/components/pages/profile-page.tsx",
+                                    lineNumber: 123,
+                                    columnNumber: 13
+                                }, this),
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                    className: "text-xs text-blue-600 dark:text-blue-400 font-medium mt-1",
+                                    children: "This Week"
+                                }, void 0, false, {
+                                    fileName: "[project]/components/pages/profile-page.tsx",
+                                    lineNumber: 124,
+                                    columnNumber: 13
+                                }, this)
+                            ]
+                        }, void 0, true, {
+                            fileName: "[project]/components/pages/profile-page.tsx",
+                            lineNumber: 121,
+                            columnNumber: 11
+                        }, this)
+                    }, void 0, false, {
+                        fileName: "[project]/components/pages/profile-page.tsx",
+                        lineNumber: 120,
+                        columnNumber: 9
+                    }, this),
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Card"], {
+                        className: "border-orange-500/20 bg-gradient-to-br from-orange-50 to-orange-100/50 dark:from-orange-950/20 dark:to-orange-900/10",
+                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["CardContent"], {
+                            className: "p-4 text-center",
+                            children: [
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$clock$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Clock$3e$__["Clock"], {
+                                    className: "w-6 h-6 mx-auto mb-2 text-orange-600 dark:text-orange-400"
+                                }, void 0, false, {
+                                    fileName: "[project]/components/pages/profile-page.tsx",
+                                    lineNumber: 130,
+                                    columnNumber: 13
+                                }, this),
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                    className: "text-2xl font-bold text-orange-700 dark:text-orange-300",
+                                    children: stats.totalBunches
+                                }, void 0, false, {
+                                    fileName: "[project]/components/pages/profile-page.tsx",
+                                    lineNumber: 131,
+                                    columnNumber: 13
+                                }, this),
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                    className: "text-xs text-orange-600 dark:text-orange-400 font-medium mt-1",
+                                    children: "Total Bunches"
+                                }, void 0, false, {
+                                    fileName: "[project]/components/pages/profile-page.tsx",
+                                    lineNumber: 132,
+                                    columnNumber: 13
+                                }, this)
+                            ]
+                        }, void 0, true, {
+                            fileName: "[project]/components/pages/profile-page.tsx",
+                            lineNumber: 129,
+                            columnNumber: 11
+                        }, this)
+                    }, void 0, false, {
+                        fileName: "[project]/components/pages/profile-page.tsx",
+                        lineNumber: 128,
+                        columnNumber: 9
+                    }, this)
+                ]
+            }, void 0, true, {
+                fileName: "[project]/components/pages/profile-page.tsx",
+                lineNumber: 111,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                 className: "flex-1"
             }, void 0, false, {
                 fileName: "[project]/components/pages/profile-page.tsx",
-                lineNumber: 53,
+                lineNumber: 138,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2775,56 +3515,57 @@ function ProfilePage({ onLogout }) {
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
                         size: "lg",
                         variant: "outline",
-                        className: "w-full h-12",
+                        className: "w-full h-12 font-medium shadow-sm hover:shadow-md transition-shadow",
                         onClick: ()=>alert('Clear local data - not implemented for demo'),
                         children: [
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$trash$2d$2$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Trash2$3e$__["Trash2"], {
                                 className: "w-4 h-4 mr-2"
                             }, void 0, false, {
                                 fileName: "[project]/components/pages/profile-page.tsx",
-                                lineNumber: 63,
+                                lineNumber: 148,
                                 columnNumber: 11
                             }, this),
                             "Clear Local Data"
                         ]
                     }, void 0, true, {
                         fileName: "[project]/components/pages/profile-page.tsx",
-                        lineNumber: 57,
+                        lineNumber: 142,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
                         size: "lg",
                         variant: "destructive",
-                        className: "w-full h-12 bg-destructive hover:bg-destructive/90",
+                        className: "w-full h-12 bg-gradient-to-r from-destructive to-red-600 hover:from-destructive/90 hover:to-red-600/90 font-medium shadow-md hover:shadow-lg transition-all",
                         onClick: onLogout,
                         children: [
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$log$2d$out$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__LogOut$3e$__["LogOut"], {
                                 className: "w-4 h-4 mr-2"
                             }, void 0, false, {
                                 fileName: "[project]/components/pages/profile-page.tsx",
-                                lineNumber: 73,
+                                lineNumber: 158,
                                 columnNumber: 11
                             }, this),
                             "Logout"
                         ]
                     }, void 0, true, {
                         fileName: "[project]/components/pages/profile-page.tsx",
-                        lineNumber: 67,
+                        lineNumber: 152,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/components/pages/profile-page.tsx",
-                lineNumber: 56,
+                lineNumber: 141,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/components/pages/profile-page.tsx",
-        lineNumber: 20,
+        lineNumber: 61,
         columnNumber: 5
     }, this);
 }
+_s(ProfilePage, "wrRjVLsu+vn0GHAFrW4GuJ1+Hws=");
 _c = ProfilePage;
 var _c;
 __turbopack_context__.k.register(_c, "ProfilePage");

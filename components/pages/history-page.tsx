@@ -14,6 +14,9 @@ interface HistoryItem {
   timestamp: string
   image: string
   confidence?: number
+  totalBunches?: number
+  classificationSummary?: Record<string, number>
+  inferenceTime?: number
 }
 
 interface HistoryPageProps {
@@ -34,6 +37,9 @@ export default function HistoryPage({ onSelectItem }: HistoryPageProps) {
       const grade = GRADE_LABELS[record.topClass] || `Class ${record.topClass}`
       const confidencePercent = (record.confidence * 100).toFixed(1)
       
+      // Extract additional data from record if available
+      const recordData = record as any
+      
       return {
         id: record.id,
         grade: grade,
@@ -41,7 +47,10 @@ export default function HistoryPage({ onSelectItem }: HistoryPageProps) {
         status: 'unsynced' as const,
         timestamp: formatTimestamp(record.timestamp),
         image: record.imageUrl,
-        confidence: record.confidence
+        confidence: record.confidence,
+        totalBunches: recordData.totalBunches,
+        classificationSummary: recordData.classificationSummary,
+        inferenceTime: recordData.inferenceTime
       }
     })
     
@@ -102,14 +111,28 @@ export default function HistoryPage({ onSelectItem }: HistoryPageProps) {
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2 mb-1">
                   <span className="text-sm font-bold text-primary">Grade {item.grade}</span>
-                  <Badge
-                    variant={item.status === 'synced' ? 'default' : 'secondary'}
-                    className="text-xs"
-                  >
-                    {item.status === 'synced' ? 'Synced' : 'Unsynced'}
-                  </Badge>
+                  {item.totalBunches !== undefined && (
+                    <Badge variant="outline" className="text-xs">
+                      {item.totalBunches} bunch{item.totalBunches !== 1 ? 'es' : ''}
+                    </Badge>
+                  )}
                 </div>
-                <p className="text-sm font-semibold">{item.quantity}</p>
+                {item.classificationSummary ? (
+                  <div className="flex gap-1.5 mb-1">
+                    {Object.entries(item.classificationSummary).map(([className, count]) => (
+                      <span key={className} className="text-xs px-1.5 py-0.5 rounded" style={{
+                        backgroundColor: className.includes('unripe') ? '#00FF0020' : 
+                                       className.includes('over') ? '#FF000020' : '#FFA50020',
+                        color: className.includes('unripe') ? '#00AA00' : 
+                               className.includes('over') ? '#CC0000' : '#CC8400'
+                      }}>
+                        {className}: {count}
+                      </span>
+                    ))}
+                  </div>
+                ) : (
+                  <p className="text-sm font-semibold mb-1">{item.quantity}</p>
+                )}
                 <p className="text-xs text-muted-foreground">{item.timestamp}</p>
               </div>
 

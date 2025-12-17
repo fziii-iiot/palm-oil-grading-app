@@ -78,14 +78,14 @@ async function POST(request) {
         }
         const startTime = Date.now();
         // Run inference via Python backend
-        const predictions = await runModelInference(image, user_id);
+        const backendResponse = await runModelInference(image, user_id);
         const inferenceTime = Date.now() - startTime;
         console.log(`[Inference API] Inference completed in ${inferenceTime}ms`);
+        // Return the complete output from backend (includes bunches, bounding boxes, classifications)
         return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
-            result: predictions.result,
-            confidence: predictions.confidence,
-            predictions: predictions.predictions,
-            inferenceTime
+            output: backendResponse.output,
+            saved: backendResponse.saved,
+            history_id: backendResponse.history_id
         });
     } catch (error) {
         console.error('[Inference API] Error:', error);
@@ -104,7 +104,7 @@ async function POST(request) {
  * 
  * @param imageBase64 - Base64 encoded image
  * @param userId - User ID for tracking (optional)
- * @returns Prediction results
+ * @returns Prediction results with bounding boxes and classifications
  */ async function runModelInference(imageBase64, userId) {
     try {
         // Python backend URL (can be configured via environment variable)
@@ -130,17 +130,16 @@ async function POST(request) {
             throw new Error(data.error || 'Python backend inference failed');
         }
         console.log('[Inference API] Python backend response:', {
-            label: data.output.label,
-            confidence: data.output.confidence,
-            inferenceTime: data.inferenceTime,
+            total_bunches: data.output.total_bunches,
+            dominant_classification: data.output.dominant_classification,
+            classification_summary: data.output.classification_summary,
+            inferenceTime: data.output.inferenceTime,
             saved: data.saved,
             history_id: data.history_id
         });
-        // Return in format expected by frontend
+        // Return complete output from backend (includes bunches array with bounding boxes)
         return {
-            result: data.output.label,
-            confidence: data.output.confidence,
-            predictions: data.output.predictions,
+            output: data.output,
             saved: data.saved,
             history_id: data.history_id
         };
